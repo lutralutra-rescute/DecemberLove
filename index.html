@@ -21,53 +21,56 @@
         overflow-x: hidden; 
     }
 
-/* === ❄️ 底部積雪效果 CSS (保留層次堆疊，最前面雪堆左下角平直版本) === */
+/* === ❄️ 底部積雪效果 CSS (像山丘般由左下角自然延伸的曲線雪堆) === */
 
     /* 定義積雪的共用樣式 */
     body::before, body::after, .snow-layer-3 {
         content: ''; /* 僅適用於偽元素 */
         position: fixed;
-        left: 0;
-        width: 100%;
         bottom: 0; 
         pointer-events: none;
     }
 
-    /* 1. 最遠層積雪 (有弧度，但底部平直) */
+    /* 1. 最遠層積雪 (頂部圓弧，底部平直，寬度100%) */
     body::before {
         background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
         height: 80px; 
         z-index: 0; 
         filter: blur(5px); /* 更模糊 */
         border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 頂部圓弧，底部平直 */
-        transform: translateY(0); /* 完全貼合底部 */
+        transform: translateY(0); 
+        width: 100%;
+        left: 0;
     }
 
-    /* 2. 中間層積雪 (有弧度，但底部平直) */
+    /* 2. 中間層積雪 (頂部圓弧，底部平直，寬度100%) */
     body::after {
         background-color: rgba(255, 255, 255, 0.9); /* 純白 */
         height: 100px; 
         z-index: 1; /* 稍微高一點 */
         filter: blur(3px); 
         border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 頂部圓弧，底部平直 */
-        transform: translateY(0); /* 完全貼合底部 */
+        transform: translateY(0); 
+        width: 100%;
+        left: 0;
     }
 
-    /* 3. 最近層積雪 (作為最平直的基底層，左上角有弧度，其他角平直) */
+    /* 3. 最近層積雪 (山丘曲線層) */
     .snow-layer-3 {
         background-color: #ffffff; /* 最白 */
-        height: 120px; 
-        z-index: 2; /* 最上層的底部積雪 */
-        filter: blur(1px); /* 幾乎不模糊 */
-        width: 65%; /* 維持右側凸顯的雪堆感 */
-        right: 0;
-        left: auto; /* 確保 right 生效 */
-        /* ❗ 關鍵修改：只設定左上角的弧度，其他角為直角 */
-        border-top-left-radius: 100px; /* 或其他合適的值，讓左上角有雪堆弧度 */
-        border-bottom-left-radius: 0; /* 明確設置左下角為直角 */
-        border-bottom-right-radius: 0; /* 明確設置右下角為直角 */
-        border-top-right-radius: 0; /* 明確設置右上角為直角 */
-        transform: rotate(0deg) translateY(0); 
+        height: 400px; /* 增加高度，以讓曲線看起來更平滑 */
+        z-index: 2; 
+        filter: blur(1px); 
+        width: 200%; /* 寬度設為兩倍，以便切出平滑曲線 */
+        left: -100%; /* 從左側移出視窗外一半 */
+        
+        /* ❗ 關鍵調整：設定左下角為極大的圓弧，讓它呈現山丘狀 */
+        border-top-left-radius: 0; 
+        border-top-right-radius: 0; 
+        border-bottom-left-radius: 100% 50%; /* 關鍵：產生巨大的底部弧度 */
+        border-bottom-right-radius: 0; /* 右側底部保持平直 (會被切到視窗外) */
+        
+        transform: translateY(350px); /* 讓雪堆基部貼近底部，只露出曲線 */
     }
     
     /* === ❄️ 底部積雪效果 CSS 結束 (已移除浮動動畫) === */
@@ -605,6 +608,7 @@
     </script>
 </body>
 </html>
+
 
 
 
