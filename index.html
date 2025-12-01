@@ -8,82 +8,22 @@
     /* 網站主體樣式 */
     body {
         font-family: 'Microsoft JhengHei', sans-serif;
-        background-color: #34495e; /* 您指定的深藍色 */
-        color: white; /* 為了配合深色背景，將文字顏色改為白色或淺色 */
+        background-color: #34495e; /* 深藍色 */
+        color: white; 
         display: flex;
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
         margin: 0;
         padding: 20px;
-        position: relative; 
+        position: relative; /* 為了雪花動畫定位 */
         z-index: 1; 
-        overflow-x: hidden; 
+        overflow: hidden; /* 防止雪花或橫向捲軸影響佈局 */
     }
 
-/* === ❄️ 底部積雪效果 CSS (最遠層右側高度調整至 25% 頁面高度) === */
-
-    /* 定義積雪的共用樣式 */
-    .snow-layer-1, .snow-layer-2, .snow-layer-3 {
-        content: ''; 
-        position: fixed;
-        bottom: 0; 
-        pointer-events: none;
-    }
-
-    /* 1. 最遠層積雪 (左低右高，右側高點調整 - 關鍵修正 transform) */
-    .snow-layer-1 {
-        background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
-        z-index: 0; /* 最遠層 */
-        filter: blur(5px); 
-        
-        width: 150%; 
-        left: -50%;
-        height: 600px; /* 元素高度 */
-
-        /* 關鍵：創造一個巨大的左低右高的四分之一弧 */
-        border-radius: 0 0 0 0 / 0 0 0 0; 
-        border-bottom-right-radius: 0;
-        border-top-right-radius: 100% 600px; /* 右上角巨大弧度 */
-        
-        /* ❗ 修正：將元素向上推動，使其最高點露出約 200px (600 - 400 = 200px) */
-        transform: translateY(400px); 
-    }
-
-    /* 2. 中間層積雪 (保持頂部圓弧，底部平直) - 使用 body::before 偽元素 */
-    body::before {
-        content: '';
-        position: fixed;
-        left: 0;
-        width: 100%;
-        bottom: 0; 
-        background-color: rgba(255, 255, 255, 0.9); /* 純白 */
-        height: 100px; 
-        z-index: 1; /* 中間層 */
-        filter: blur(3px); 
-        border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
-        transform: translateY(0); 
-    }
-
-    /* 3. 最近層積雪 (左低右高，寬度 120%，圓滑曲線) - 維持不變 */
-    .snow-layer-3 {
-        background-color: #ffffff; 
-        z-index: 2; /* 最前面 */
-        filter: blur(0.5px); 
-
-        width: 120%; 
-        left: -20%;
-        height: 800px; 
-
-        border-radius: 0 0 0 0 / 0 0 0 0;
-        border-bottom-right-radius: 0;
-        border-top-right-radius: 100% 800px; 
-
-        /* 調整垂直位置：露出 150px 高度 */
-        transform: translateY(650px); 
-    }
+    /* === ❌ 移除所有背景積雪 CSS (根據您的指示) === */
+    /* 由於您決定移除，相關的 .snow-layer-1, body::before, .snow-layer-3 定義已移除 */
     
-    /* === ❄️ 底部積雪效果 CSS 結束 === */
     h1 {
         color: #ff7675; /* 搭配深藍背景，使用暖色系 */
         font-size: 2rem;
@@ -142,7 +82,7 @@
         width: 100%;
         max-width: 600px;
         position: relative;
-        z-index: 5; /* 確保日曆在積雪之上 */
+        z-index: 5; /* 確保日曆在雪花之上 */
     }
 
     /* 深色背景下，卡片調整為淺色 */
@@ -161,36 +101,35 @@
         transition: all 0.2s;
         border: 2px solid transparent;
         position: relative;
-        overflow: hidden; /* 防止積雪圖片溢出方塊過多 */
+        overflow: hidden; 
     }
 
-    /* === ❄️ 使用圖片的卡片積雪效果 (替換) === */
+    /* === ❄️ 純 CSS 卡片積雪效果 (替換圖片) === */
     .day-box::before {
         content: '';
         position: absolute;
-        top: -10px; /* 根據圖片高度調整 */
+        top: 0;
         left: 0;
         width: 100%;
-        height: 30px; /* 根據積雪圖片的實際高度調整 */
-        /* ❗ 請務必將您的積雪圖片命名為 snow_edge.png 並放在 images 資料夾中 */
-        background-image: url('images/snow_edge.png'); 
-        background-size: 100% 100%; /* 讓圖片完全覆蓋 */
-        background-repeat: no-repeat;
-        background-position: center top;
+        height: 15px; /* 積雪高度 */
+        background-color: #ffffff;
+        
+        /* 圓弧曲線 */
+        border-radius: 0 0 50% 50% / 0 0 100% 100%;
+        
         z-index: 12; 
-        transition: opacity 0.3s ease; 
-        filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2)); /* 增加陰影 */
-        animation: snowWobble 6s ease-in-out infinite alternate; /* 輕微晃動動畫 */
+        filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
+        animation: snowWobble 6s ease-in-out infinite alternate;
     }
 
-    /* 移除 .day-box::after 偽元素，確保只有圖片樣式 */
+    /* 移除 .day-box::after 偽元素 (您原程式碼已移除，這裡確保沒有) */
     .day-box::after {
         content: none;
     }
 
     /* 鎖住的卡片，積雪會變得稍微暗淡 */
     .day-box.locked::before {
-        opacity: 0.6; 
+        opacity: 0.8; 
         filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.1));
     }
 
@@ -200,7 +139,7 @@
         50% { transform: translateY(2px) rotate(1deg); }
         100% { transform: translateY(0) rotate(0deg); }
     }
-    /* === ❄️ 卡片積雪效果結束 (已替換為圖片模式) === */
+    /* === ❄️ 卡片積雪效果結束 (純 CSS 版本) === */
 
 
     .day-box:hover {
@@ -244,7 +183,7 @@
         bottom: 5px;
         right: 5px;
         display: none;
-        z-index: 15; /* 確保在積雪圖片上方 */
+        z-index: 15; 
         color: white; /* 鎖頭也改為淺色 */
     }
     .day-box.locked .lock-icon { display: block; }
@@ -302,12 +241,12 @@
     }
 
     @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0.4); } /* 配合新的紅色 */
+        0% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0.4); } 
         70% { box-shadow: 0 0 0 10px rgba(255, 118, 117, 0); }
         100% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0); }
     }
 
-    /* === ❄️ 純 CSS 雪花效果 (終極防閃爍版本) === */
+    /* === ❄️ 純 CSS 三層雪花效果 (終極版本) === */
 
     /* 定義雪花下落動畫 */
     @keyframes snowfall {
@@ -323,7 +262,7 @@
         width: 100%;
         height: 200vh; /* 確保有足夠的空間讓雪花下落 */
         pointer-events: none;
-        z-index: 9999; /* 確保雪花在最上層 */
+        z-index: 4; /* 在背景和日曆內容之間 */
         animation: snowfall 30s linear infinite; /* 基礎動畫速度 */
     }
     
@@ -332,7 +271,7 @@
         width: 1px;
         height: 1px;
         background: transparent;
-        /* 調整 box-shadow 讓雪花點更密集，並調整其顏色/模糊度 */
+        /* 使用 box-shadow 模擬大量雪花點 */
         box-shadow: 
             30vw 10vh 0 0 #ecf0f1, 5vw 40vh 0 0 #ecf0f1, 70vw 70vh 0 0 #ecf0f1, 95vw 100vh 0 0 #ecf0f1, 10vw 130vh 0 0 #ecf0f1, 80vw 160vh 0 0 #ecf0f1, 50vw 190vh 0 0 #ecf0f1,
             15vw 20vh 0 0 #ecf0f1, 45vw 50vh 0 0 #ecf0f1, 65vw 80vh 0 0 #ecf0f1, 90vw 110vh 0 0 #ecf0f1, 20vw 140vh 0 0 #ecf0f1, 75vw 170vh 0 0 #ecf0f1, 40vw 200vh 0 0 #ecf0f1;
@@ -380,8 +319,6 @@
         <div class="snow-mid"></div>
         <div class="snow-near"></div>
     </div>
-    <div class="snow-layer-3" aria-hidden="true"></div> 
-    
     <h1>🎄 專屬你的 12 月倒數情書 ❤️</h1>
     <div class="subtitle">戴上耳機，點擊今天的日期...</div>
 
@@ -403,11 +340,9 @@
         // 請把引號內的網址換成你的 Google Drive 或 Dropbox 分享連結
         const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5bvKNYL19MItTG2u?usp=sharing";
         // 為了方便您現在測試，我加了一個「測試模式」
-        // 如果設為 true：所有日期都會解鎖 (方便您檢查)
-        // 如果設為 false：會抓取真實日期 (送給女友時請改成 false)
         const TEST_MODE = false; 
 
-        // 31 句台詞資料庫
+        // 31 句台詞資料庫 (保持不變)
         const messages = {
             1: "12月的第一天，只是想告訴你，這個月因為有你，冬天好像就沒有那麼冷了……記得把接下來的每一天都空給我呦～",
             2: "天氣變冷了，記得多穿一點喔……你是笨蛋嗎？穿這麼少萬一感冒了怎麼辦……真是的，外套借你啦，要記得感謝我喔。",
@@ -612,41 +547,8 @@
             }
         }
         
-        // ❗ 移除所有 JS 生成雪花的程式碼 (因為我們已改用純 CSS)
+        // ❗ 移除了所有不必要的 JavaScript 雪花生成程式碼
 
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
