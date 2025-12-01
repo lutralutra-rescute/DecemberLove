@@ -21,7 +21,7 @@
         overflow-x: hidden; 
     }
 
-/* === ❄️ 底部積雪效果 CSS (左升右斜的雪坡，使用 clip-path) === */
+/* === ❄️ 底部積雪效果 CSS (左低右高，寬度 70% 的雪坡曲線) === */
 
     /* 定義積雪的共用樣式 - 保持不變 */
     body::before, body::after, .snow-layer-3 {
@@ -29,7 +29,6 @@
         position: fixed;
         bottom: 0; 
         pointer-events: none;
-        width: 100%; 
         left: 0;
     }
 
@@ -41,6 +40,7 @@
         filter: blur(5px); 
         border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
         transform: translateY(0); 
+        width: 100%;
     }
 
     /* 2. 中間層積雪 (保持頂部圓弧，底部平直) - 保持不變 */
@@ -51,59 +51,30 @@
         filter: blur(3px); 
         border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
         transform: translateY(0); 
+        width: 100%;
     }
 
-    /* 3. 最近層積雪 (雪坡曲線 - 關鍵修改) */
+    /* 3. 最近層積雪 (單向上升雪坡 - 關鍵修改) */
     .snow-layer-3 {
         background-color: #ffffff; 
-        height: 200px; /* 增加高度，提供剪裁空間 */
         z-index: 2; 
-        filter: blur(0.5px); /* 輕微模糊 */
+        filter: blur(0.5px); 
         
-        /* ❗ 核心：使用 clip-path 創建左升右斜的曲線 */
-        /* polygon(左上, 右上, 右下, 左下) */
-        /* 貝茲曲線(起始點, 控制點1, 控制點2, 結束點) */
-        clip-path: polygon(
-            0% 100%, /* 左下角 (起始點) */
-            0% 0%,   /* 左上角 (為了確保剪裁從底部開始) */
-            100% 0%, /* 右上角 */
-            100% 100%, /* 右下角 */
-            
-            /* 這裡我們將使用 cubic-bezier 來替換 top edge，
-               但因為 CSS clip-path 不直接支援 cubic-bezier，
-               我們使用 polygon 的點來近似實現您畫的線條，這需要大量的點。
-               為了簡化，我們使用一個更平緩的 polygon 來模擬：
-            */
-            0% 100%, /* 從左下角開始 */
-            100% 100%, /* 到右下角 */
-            100% 50%, /* 右上側的曲線控制點 */
-            0% 90% /* 左上側的曲線控制點 */
-        );
+        /* ❗ 寬度 & 定位要求 */
+        width: 70%; /* 僅佔頁面 70% */
         
-        /* 替代方案：使用更簡單的 polygon 來模擬左升右斜 */
-        /* 點：左下, 右下, 右上 (高度 5%), 左上 (高度 20%) */
-        clip-path: polygon(
-            0% 100%,  /* 左下角 */
-            100% 100%, /* 右下角 */
-            100% 5%,  /* 右上角 (貼近頂部) */
-            0% 20%  /* 左上角 (較低一點，形成斜坡) */
-        );
+        /* ❗ 高度與曲線設定 */
+        height: 500px; /* 元素高度 */
         
-        /* 使用貝茲曲線模擬您圖中的平滑曲線 (這是最接近您想要的線條) */
-        /* 貝茲曲線點: P0 (0, 100) -> P1 (20, 50) -> P2 (80, 20) -> P3 (100, 5) */
-        /* 由於 CSS 原生 clip-path 不支持貝茲曲線，我們必須依賴 SVG 或大量 polygon 點。
-           我們回頭使用一個巨大的 border-radius 組合，搭配 transform: skewX 試圖傾斜它。
-        */
+        /* 創造一個巨大的四分之一橢圓在右上角 */
+        /* 這會讓雪坡從左下角(0, 500)平滑地升到右上角(70%, 0) */
+        border-top-right-radius: 100% 500px; 
         
-        /* 移除 clip-path，改用 transform 組合技巧 */
-        height: 150px; 
-        width: 120%; /* 略寬一點 */
-        left: -10%;
-        border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 巨大的上半圓弧 */
-        transform: translateY(100px) skewX(-15deg); /* 向下推並傾斜 */
-        transform-origin: bottom center; /* 確保底部錨定 */
+        /* ❗ 垂直位置調整 (控制右側最高點) */
+        /* 將元素向下推 300px，讓曲線最高點 (500-300 = 200px) 露出來 (約 30% 頁面高度) */
+        transform: translateY(300px); 
     }
-
+    
     /* === ❄️ 底部積雪效果 CSS 結束 (已移除浮動動畫) === */
 
     h1 {
@@ -639,6 +610,7 @@
     </script>
 </body>
 </html>
+
 
 
 
