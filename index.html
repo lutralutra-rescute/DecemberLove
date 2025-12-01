@@ -147,7 +147,7 @@
         z-index: 5; /* 確保日曆在積雪之上 */
     }
 
-    /* 深色背景下，卡片調整為淺色 */
+/* 深色背景下，卡片調整為淺色 */
     .day-box {
         background: #ecf0f1; 
         border-radius: 12px;
@@ -163,27 +163,62 @@
         transition: all 0.2s;
         border: 2px solid transparent;
         position: relative;
+        overflow: hidden; /* 防止積雪溢出方塊過多 */
     }
 
-    /* === ❄️ 卡片上的積雪效果 (新增) === */
+    /* === ❄️ 優化後的卡片積雪效果 (新增或替換) === */
+    /* 卡片頂部的積雪 */
     .day-box::before {
         content: '';
         position: absolute;
-        top: -10px; /* 略微超出頂部 */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80%;
+        top: -8px; /* 稍微向上，創造堆積感 */
+        left: -5px; /* 稍微向左 */
+        width: 110%; /* 比卡片寬，增加覆蓋感 */
+        height: 20px; /* 雪堆高度 */
+        background-color: rgba(255, 255, 255, 0.95); /* 更白，略帶透明 */
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 圓潤的頂部 */
+        filter: blur(0.5px); /* 微弱模糊 */
+        transform: rotate(-2deg); /* 輕微傾斜 */
+        transition: background-color 0.3s ease;
+        animation: snowSway 10s ease-in-out infinite alternate;
+        z-index: 12; /* 確保在數字和鎖頭下方，但比卡片本身高 */
+    }
+
+    /* 卡片左上角的積雪 */
+    .day-box::after {
+        content: '';
+        position: absolute;
+        top: 5px; /* 從卡片內部開始 */
+        left: -10px; /* 稍微向左外側 */
+        width: 30px; /* 小雪堆 */
         height: 15px;
         background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 50% / 100% 100% 0 0; /* 模擬圓潤的雪堆在頂部 */
-        filter: blur(1px);
-        opacity: 0.8; /* 略微透明，更自然 */
+        border-radius: 50%; /* 圓形小雪堆 */
+        filter: blur(0.5px);
+        transform: rotate(5deg);
+        transition: background-color 0.3s ease;
+        animation: snowSwaySmall 8s ease-in-out infinite alternate-reverse;
+        z-index: 12;
     }
-    .day-box.locked::before {
-        opacity: 0.4; /* 鎖住的卡片雪少一點，或更暗一點 */
-        background-color: rgba(200, 200, 200, 0.8);
+
+    /* 鎖住的卡片，積雪顏色和透明度會變化 */
+    .day-box.locked::before,
+    .day-box.locked::after {
+        background-color: rgba(200, 200, 200, 0.7); /* 較暗，較透明的積雪 */
     }
-    /* === ❄️ 卡片上的積雪效果 (結束) === */
+
+    /* 積雪動畫 */
+    @keyframes snowSway {
+        0% { transform: rotate(-2deg) translateX(0); }
+        50% { transform: rotate(1deg) translateX(5px); }
+        100% { transform: rotate(-2deg) translateX(0); }
+    }
+    @keyframes snowSwaySmall {
+        0% { transform: rotate(5deg) translateY(0); }
+        50% { transform: rotate(2deg) translateY(3px); }
+        100% { transform: rotate(5deg) translateY(0); }
+    }
+    /* === ❄️ 卡片積雪效果結束 === */
 
 
     .day-box:hover {
@@ -228,8 +263,9 @@
         right: 5px;
         display: none;
         z-index: 15; /* 確保在卡片積雪上方 */
+        color: white; /* 鎖頭也改為淺色 */
     }
-    .day-box.locked .lock-icon { color: white; display: block; } /* 鎖頭也改為淺色 */
+    .day-box.locked .lock-icon { display: block; }
 
     /* 彈出文字視窗 */
     .message-modal {
@@ -597,5 +633,6 @@
     </script>
 </body>
 </html>
+
 
 
