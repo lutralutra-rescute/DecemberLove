@@ -8,8 +8,8 @@
         /* 網站主體樣式 */
         body {
             font-family: 'Microsoft JhengHei', sans-serif;
-            background-color: #34495e;
-            color: #4a4a4a;
+            background-color: #34495e; /* 使用您指定的深藍色 */
+            color: white; /* 為了配合深色背景，將文字顏色改為白色或淺色 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -22,15 +22,15 @@
         }
 
         h1 {
-            color: #d63031;
+            color: #ff7675; /* 搭配深藍背景，使用暖色系 */
             font-size: 2rem;
             margin-bottom: 5px;
-            text-shadow: 2px 2px 0px #fad390;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 深色背景陰影調淡 */
         }
 
         .subtitle {
             margin-bottom: 20px;
-            color: #636e72;
+            color: #ecf0f1; /* 淺灰色 */
             font-size: 1rem;
         }
 
@@ -47,7 +47,7 @@
             border-radius: 50px;
             font-size: 1rem;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             transition: transform 0.2s, background 0.2s;
             display: flex;
             align-items: center;
@@ -74,8 +74,9 @@
             max-width: 600px;
         }
 
+        /* 深色背景下，卡片調整為淺色 */
         .day-box {
-            background: white;
+            background: #ecf0f1; 
             border-radius: 12px;
             height: 70px;
             display: flex;
@@ -83,8 +84,8 @@
             align-items: center;
             font-size: 1.4rem;
             font-weight: bold;
-            color: #d63031;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            color: #2c3e50; /* 深色文字 */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             cursor: pointer;
             transition: all 0.2s;
             border: 2px solid transparent;
@@ -98,7 +99,7 @@
 
         /* 今天 */
         .day-box.today {
-            background-color: #d63031;
+            background-color: #ff7675;
             color: white;
             animation: pulse 2s infinite;
         }
@@ -106,7 +107,7 @@
         /* 播放中 */
         .day-box.playing {
             background-color: #fdcb6e;
-            color: white;
+            color: #2c3e50;
             border-color: #ffeaa7;
             transform: scale(1.1);
             z-index: 10;
@@ -114,10 +115,10 @@
 
         /* 尚未解鎖的日子 (未來) */
         .day-box.locked {
-            background-color: #eee;
-            color: #bbb;
+            background-color: #4a637a; /* 配合深色背景的鎖住顏色 */
+            color: #95a5a6;
             cursor: not-allowed;
-            box-shadow: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
         .day-box.locked:hover {
@@ -133,7 +134,7 @@
             right: 5px;
             display: none;
         }
-        .day-box.locked .lock-icon { display: block; }
+        .day-box.locked .lock-icon { color: white; display: block; } /* 鎖頭也改為淺色 */
 
         /* 彈出文字視窗 */
         .message-modal {
@@ -143,10 +144,10 @@
             transform: translateX(-50%);
             width: 90%;
             max-width: 500px;
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.98); /* 幾乎不透明的白色 */
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             text-align: center;
             display: none;
             border: 2px solid #fab1a0;
@@ -163,7 +164,7 @@
 
         .close-btn {
             padding: 8px 20px;
-            background-color: #d63031;
+            background-color: #ff7675;
             color: white;
             border: none;
             border-radius: 20px;
@@ -175,7 +176,7 @@
             display: inline-block;
             margin-top: 15px;
             padding: 10px 20px;
-            background-color: #0984e3; /* 藍色系，區別於紅色 */
+            background-color: #3498db; /* 亮藍色 */
             color: white;
             text-decoration: none;
             border-radius: 50px;
@@ -188,53 +189,85 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(214, 48, 49, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0.4); } /* 配合新的紅色 */
+            70% { box-shadow: 0 0 0 10px rgba(255, 118, 117, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0); }
         }
 
-        /* === ❄️ 雪花效果 CSS === */
-        .snowflakes {
+        /* === ❄️ 純 CSS 雪花效果 (終極防閃爍版本) === */
+
+        /* 定義雪花下落動畫 */
+        @keyframes snowfall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); } 
+        }
+
+        /* 主容器，用於容納和移動三層雪花 */
+        .snow-box {
             position: fixed;
-            top: 0;
+            top: -100vh; /* 從視窗外開始，確保循環平滑 */
             left: 0;
             width: 100%;
-            height: 100vh; /* 使用 100vh 確保覆蓋整個視窗 */
-            pointer-events: none; 
-            z-index: 9999; 
-            overflow: hidden; 
+            height: 200vh; /* 確保有足夠的空間讓雪花下落 */
+            pointer-events: none;
+            z-index: 9999;
+            animation: snowfall 30s linear infinite; /* 基礎動畫速度 */
+        }
+        
+        /* 1. 遠景雪花 (小、慢) */
+        .snow-far {
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            /* 調整 box-shadow 讓雪花點更密集，並調整其顏色/模糊度 */
+            box-shadow: 
+                30vw 10vh 0 0 #ecf0f1, 5vw 40vh 0 0 #ecf0f1, 70vw 70vh 0 0 #ecf0f1, 95vw 100vh 0 0 #ecf0f1, 10vw 130vh 0 0 #ecf0f1, 80vw 160vh 0 0 #ecf0f1, 50vw 190vh 0 0 #ecf0f1,
+                15vw 20vh 0 0 #ecf0f1, 45vw 50vh 0 0 #ecf0f1, 65vw 80vh 0 0 #ecf0f1, 90vw 110vh 0 0 #ecf0f1, 20vw 140vh 0 0 #ecf0f1, 75vw 170vh 0 0 #ecf0f1, 40vw 200vh 0 0 #ecf0f1;
+            opacity: 0.5;
         }
 
-        .snowflake {
-            color: #fff; 
-            font-size: 1.5em; 
-            font-family: Arial, sans-serif;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); 
+        /* 2. 中景雪花 (中、適中) */
+        .snow-mid {
+            width: 2px;
+            height: 2px;
+            background: transparent;
+            box-shadow: 
+                10vw 5vh 0 0 #ffffff, 60vw 35vh 0 0 #ffffff, 85vw 65vh 0 0 #ffffff, 25vw 95vh 0 0 #ffffff, 70vw 125vh 0 0 #ffffff, 5vw 155vh 0 0 #ffffff, 90vw 185vh 0 0 #ffffff,
+                55vw 25vh 0 0 #ffffff, 15vw 55vh 0 0 #ffffff, 80vw 85vh 0 0 #ffffff, 45vw 115vh 0 0 #ffffff, 95vw 145vh 0 0 #ffffff, 30vw 175vh 0 0 #ffffff;
+            opacity: 0.8;
+            animation: snowfall 20s linear infinite; /* 比主容器快，增加層次感 */
+        }
+
+        /* 3. 近景雪花 (大、快) */
+        .snow-near {
+            width: 3px;
+            height: 3px;
+            background: transparent;
+            box-shadow: 
+                50vw 15vh 0 0 #ffffff, 20vw 45vh 0 0 #ffffff, 80vw 75vh 0 0 #ffffff, 10vw 105vh 0 0 #ffffff, 65vw 135vh 0 0 #ffffff, 35vw 165vh 0 0 #ffffff, 95vw 195vh 0 0 #ffffff;
+            opacity: 1;
+            animation: snowfall 15s linear infinite; /* 比中景快 */
+        }
+
+        /* 讓三個雪花層級都從視窗外開始，並保持絕對定位 */
+        .snow-far, .snow-mid, .snow-near {
             position: absolute;
-            top: -10%; /* 從視窗上方開始 */
-            animation: fall linear infinite;
+            top: 0;
+            left: 0;
+            /* 讓他們各自獨立，但同時被 .snow-box 的動畫帶動 */
         }
 
-        /* ❗ 修正閃爍：讓雪花相對容器下落 */
-        @keyframes fall {
-            to {
-                transform: translateY(100%); /* 相對於雪花自身高度的 100% */
-            }
-        }
-        /* 瀏覽器相容性前綴 */
-        @-webkit-keyframes fall {
-            to {
-                -webkit-transform: translateY(100%);
-            }
-        }
         /* === ❄️ 雪花效果 CSS 結束 === */
 
     </style>
 </head>
 <body>
 
-    <div class="snowflakes" aria-hidden="true">
-        </div>
+    <div class="snow-box" aria-hidden="true">
+        <div class="snow-far"></div>
+        <div class="snow-mid"></div>
+        <div class="snow-near"></div>
+    </div>
     <h1>December Love</h1>
     <div class="subtitle">戴上耳機，點擊今天的日期...</div>
 
@@ -346,9 +379,9 @@
             
             // 播放音檔
             playAudioFile(day, () => {
-                element.classList.remove('playing'); 
+                element.classList.remove('playing'); 
             }, () => {
-                element.classList.add('playing'); 
+                element.classList.add('playing'); 
                 showModal(messages[day] || "（這天還沒有寫悄悄話喔）", day);
             });
 
@@ -465,47 +498,11 @@
             }
         }
         
-        // === ❄️ 雪花效果 JavaScript (防閃爍修正) ===
-        document.addEventListener('DOMContentLoaded', () => {
-            const snowflakesContainer = document.querySelector('.snowflakes');
-            const numberOfSnowflakes = 50; 
-
-            function createSnowflake() {
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                snowflake.textContent = (Math.random() > 0.5) ? '❅' : '❆'; 
-                
-                snowflake.style.left = Math.random() * 100 + 'vw';
-                snowflake.style.fontSize = Math.random() * 1.5 + 0.8 + 'em'; 
-                snowflake.style.animationDuration = Math.random() * 10 + 5 + 's'; 
-                snowflake.style.animationDelay = Math.random() * numberOfSnowflakes + 's';
-                
-                // 確保雪花在開始時就有一個穩定的透明度
-                const randomOpacity = Math.random() * 0.7 + 0.3; 
-                snowflake.style.opacity = randomOpacity; 
-
-                snowflakesContainer.appendChild(snowflake);
-
-                // 當雪花落到底部後，重置它的位置 (使其循環)
-                snowflake.addEventListener('animationiteration', () => {
-                    snowflake.style.left = Math.random() * 100 + 'vw';
-                    snowflake.style.animationDuration = Math.random() * 10 + 5 + 's';
-                    snowflake.style.fontSize = Math.random() * 1.5 + 0.8 + 'em';
-                    snowflake.style.opacity = Math.random() * 0.7 + 0.3; 
-                });
-            }
-
-            for (let i = 0; i < numberOfSnowflakes; i++) {
-                createSnowflake();
-            }
-        });
-        // === ❄️ 雪花效果 JavaScript 結束 ===
+        // ❗ 移除所有 JS 生成雪花的程式碼 (因為我們已改用純 CSS)
 
     </script>
 </body>
 </html>
-
-
 
 
 
