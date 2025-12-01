@@ -21,7 +21,7 @@
         overflow-x: hidden; 
     }
 
-/* === ❄️ 底部積雪效果 CSS (前後都有山坡弧度版本) === */
+/* === ❄️ 底部積雪效果 CSS (扁平柔和的雪地景觀弧度) === */
 
     /* 定義積雪的共用樣式 */
     body::before, body::after, .snow-layer-3 {
@@ -31,45 +31,45 @@
         pointer-events: none;
     }
 
-    /* 1. 最遠層積雪 (頂部圓弧，底部平直，寬度100%) */
+    /* 1. 最遠層積雪 (頂部圓弧，底部平直，寬度100%) - 保持不變 */
     body::before {
         background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
         height: 80px; 
         z-index: 0; 
         filter: blur(5px); /* 更模糊 */
-        border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 頂部圓弧，底部平直 */
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
         transform: translateY(0); 
         width: 100%;
         left: 0;
     }
 
-    /* 2. 中間層積雪 (頂部圓弧，底部平直，寬度100%) */
+    /* 2. 中間層積雪 (頂部圓弧，底部平直，寬度100%) - 保持不變 */
     body::after {
         background-color: rgba(255, 255, 255, 0.9); /* 純白 */
         height: 100px; 
         z-index: 1; /* 稍微高一點 */
         filter: blur(3px); 
-        border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 頂部圓弧，底部平直 */
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
         transform: translateY(0); 
         width: 100%;
         left: 0;
     }
 
-    /* 3. 最近層積雪 (巨大的山丘曲線層 - 關鍵修改) */
+    /* 3. 最近層積雪 (扁平柔和的雪地曲線層 - 關鍵修改) */
     .snow-layer-3 {
         background-color: #ffffff; /* 最白 */
-        height: 250px; /* 創造足夠高度以形成弧度 */
+        height: 1000px; /* 增加極大高度來壓平曲線 */
         z-index: 2; 
         filter: blur(1px); 
         width: 300%; /* 寬度設為三倍，確保兩側有弧度 */
         left: -100%; /* 從左側移出視窗外一半，置中 */
         
-        /* ❗ 關鍵調整：創造一個巨大的橢圓底部 */
-        /* 上層圓角為 0，下層圓角為 50% 50% */
-        border-radius: 0 0 50% 50% / 0 0 100% 100%; 
+        /* ❗ 關鍵調整：使用極扁平的橢圓形狀 */
+        /* 設置底部水平圓角為 50%，垂直圓角為 1000px (與高度相近) */
+        border-radius: 0 0 50% 50% / 0 0 1000px 1000px; 
         
-        /* 調整垂直位置，讓雪丘的頂部貼合底部 */
-        transform: translateY(220px); /* 向上推動，只露出弧度頂部 */
+        /* 調整垂直位置，確保只有最平坦的曲線露出 */
+        transform: translateY(980px); /* 向上推動，只露出最頂端約 20px 的曲線 */
     }
     
     /* === ❄️ 底部積雪效果 CSS 結束 (已移除浮動動畫) === */
@@ -607,6 +607,7 @@
     </script>
 </body>
 </html>
+
 
 
 
