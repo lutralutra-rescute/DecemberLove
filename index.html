@@ -21,7 +21,7 @@
         overflow-x: hidden; 
     }
 
-    /* === ❄️ 底部積雪效果 CSS (移除浮動動畫版本) === */
+/* === ❄️ 底部積雪效果 CSS (完全貼合底部版本) === */
 
     /* 定義積雪的共用樣式 */
     body::before, body::after, .snow-layer-3 {
@@ -36,37 +36,35 @@
     /* 1. 最遠層積雪 (稍微灰一點，較模糊，高度較低) */
     body::before {
         background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
-        height: 80px;
+        height: 100px; /* 稍微增加高度 */
         z-index: 0; 
         filter: blur(5px); /* 更模糊 */
         border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-        /* 移除動畫，固定位置 */
-        transform: translateY(20px); 
+        transform: translateY(0); /* 完全貼合底部 */
     }
 
     /* 2. 中間層積雪 (白色，適中模糊，中等高度) */
     body::after {
         background-color: rgba(255, 255, 255, 0.9); /* 純白 */
-        height: 100px;
+        height: 120px; /* 稍微增加高度 */
         z-index: 1; /* 稍微高一點 */
         filter: blur(3px); 
         border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-        /* 移除動畫，固定位置 */
-        transform: translateY(10px); 
+        transform: translateY(0); /* 完全貼合底部 */
     }
 
     /* 3. 最近層積雪 (使用新的 Div 元素) */
     .snow-layer-3 {
         background-color: #ffffff; /* 最白 */
-        height: 150px;
+        height: 170px; /* 稍微增加高度 */
         z-index: 2; /* 最上層的底部積雪 */
         filter: blur(1px); /* 幾乎不模糊 */
         width: 65%; /* 減少寬度，讓右側凸顯 */
         right: 0;
-        left: auto;
-        border-radius: 80% 0 0 0 / 100% 0 0 0; /* 讓左側邊緣圓潤，右側平直 */
-        /* 移除動畫，固定位置 */
-        transform: rotate(3deg) translateY(5px);
+        left: auto; /* 確保 right 生效 */
+        /* 調整 border-radius 以確保貼合底部時形狀依然自然 */
+        border-radius: 70% 0 0 0 / 100% 0 0 0; 
+        transform: rotate(0deg) translateY(0); /* 移除旋轉並完全貼合底部 */
     }
     
     /* ❗ 已經移除 @keyframes subtleWave 和 @keyframes subtleWaveRight */
@@ -606,6 +604,7 @@
     </script>
 </body>
 </html>
+
 
 
 
