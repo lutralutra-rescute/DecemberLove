@@ -21,7 +21,7 @@
         overflow-x: hidden; 
     }
 
-/* === ❄️ 底部積雪效果 CSS (中間凸起，兩側弧度貼合底部的巨大雪丘) === */
+/* === ❄️ 底部積雪效果 CSS (左側雪坡，右側平直延伸版本) === */
 
     /* 定義積雪的共用樣式 */
     body::before, body::after, .snow-layer-3 {
@@ -29,8 +29,6 @@
         position: fixed;
         bottom: 0; 
         pointer-events: none;
-        width: 100%; /* 確保所有層都填滿寬度 */
-        left: 0;
     }
 
     /* 1. 最遠層積雪 (保持頂部圓弧，底部平直) */
@@ -41,6 +39,8 @@
         filter: blur(5px); 
         border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
         transform: translateY(0); 
+        width: 100%;
+        left: 0;
     }
 
     /* 2. 中間層積雪 (保持頂部圓弧，底部平直) */
@@ -51,22 +51,26 @@
         filter: blur(3px); 
         border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
         transform: translateY(0); 
+        width: 100%;
+        left: 0;
     }
 
-    /* 3. 最近層積雪 (巨大的上弧雪丘 - 關鍵修改) */
+    /* 3. 最近層積雪 (左側雪坡，右側平直延伸 - 關鍵修改) */
     .snow-layer-3 {
         background-color: #ffffff; /* 最白 */
-        height: 800px; /* 創造一個足夠高的元素 */
+        height: 800px; /* 足夠高的元素 */
         z-index: 2; 
         filter: blur(1px); 
         
-        /* ❗ 關鍵調整：使用一個巨大的上半圓弧 */
-        /* 左右下角為 0，左右上角為 50% 50% / 100% 100% */
-        border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
+        /* ❗ 關鍵調整：寬度和定位 */
+        width: 150%; /* 寬度略大於螢幕 */
+        left: -50%; /* 從左側移出螢幕一半 */
         
-        /* 調整垂直位置：向下移動，只讓弧線底部露出 */
-        /* 讓底部曲線的兩側最低點剛好貼合網頁底部 */
-        transform: translateY(700px); /* 數值可以微調，確保曲線最高點在中間，兩側貼合 */
+        /* 使用左下角的巨大圓弧來創建雪坡效果 */
+        border-radius: 0 0 0 100% / 0 0 0 1000px; /* 左下角圓弧，其他角直角 */
+        
+        /* 調整垂直位置，讓雪坡頂部露出 */
+        transform: translateY(780px); /* 向上推動，只露出左側圓弧的頂部和右側的直線 */
     }
     
     /* === ❄️ 底部積雪效果 CSS 結束 (已移除浮動動畫) === */
@@ -604,6 +608,7 @@
     </script>
 </body>
 </html>
+
 
 
 
