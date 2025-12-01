@@ -21,71 +21,72 @@
         overflow-x: hidden; 
     }
 
-/* === ❄️ 底部積雪效果 CSS (最遠層左低右高，右側沒入邊框最終修正) === */
+/* === ❄️ 底部積雪效果 CSS (最遠層修正：左低右高，圓滑，隱藏在後) === */
 
     /* 定義積雪的共用樣式 */
-    body::before, body::after, .snow-layer-3 {
+    .snow-layer-1, .snow-layer-2, .snow-layer-3 {
         content: ''; 
         position: fixed;
         bottom: 0; 
         pointer-events: none;
-        left: 0;
     }
 
-    /* 1. 最遠層積雪 (左低右高，右側沒入邊框 - 關鍵修正) */
-    body::before {
+    /* 1. 最遠層積雪 (左低右高，寬度 150%，圓滑曲線) - 關鍵修正 transform */
+    .snow-layer-1 {
         background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
-        height: 100%; /* 確保高度足以延伸到頂部 */
-        z-index: 0; 
-        filter: blur(5px); /* 更模糊 */
-        width: 100%; /* 填滿整個頁面寬度 */
+        z-index: 0; /* 最遠層 */
+        filter: blur(5px); 
         
-        /* ❗ 核心：使用 clip-path 創建左低右高，右側沒入邊框的斜切線條 */
-        /* 定義多邊形：左下、右下、右上、左上。斜切線為 (左上) 到 (右上) */
-        clip-path: polygon(
-            0% 100%,  /* 左下角 (貼底) */
-            100% 100%, /* 右下角 (貼底) */
-            100% 0%,   /* 右上角 (沒入頂部邊框) */
-            0% 90%     /* 左上角 (最低點，決定斜線起始高度) */
-        );
+        /* 寬度擴大，並向左偏移，讓弧度從左側開始上升 */
+        width: 150%; 
+        left: -50%;
+        height: 600px; /* 元素高度 */
+
+        /* 關鍵：創造一個巨大的左低右高的四分之一弧 */
+        border-radius: 0 0 0 0 / 0 0 0 0; 
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 100% 600px; /* 右上角巨大弧度 */
         
-        /* 使用 transform 模擬柔和曲線並創造左低右高的斜度 */
-        /* 向右下方傾斜，創造左低右高的動態感 */
-        transform: translateY(0) skewY(-1deg); 
+        /* ❗ 修正：將元素推回底部，使其只露出最底部的上升曲線 */
+        /* 露出高度約 50px - 80px，隱藏在中間層之後 */
+        transform: translateY(520px); 
     }
 
-    /* 2. 中間層積雪 (保持頂部圓弧，底部平直) - 維持不變 */
-    body::after {
-        background-color: rgba(255, 255, 255, 0.9); 
+    /* 2. 中間層積雪 (保持頂部圓弧，底部平直) - 使用 body::before 偽元素 */
+    body::before {
+        content: '';
+        position: fixed;
+        left: 0;
+        width: 100%;
+        bottom: 0; 
+        background-color: rgba(255, 255, 255, 0.9); /* 純白 */
         height: 100px; 
-        z-index: 1; 
+        z-index: 1; /* 中間層 */
         filter: blur(3px); 
         border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
         transform: translateY(0); 
-        width: 100%;
     }
 
-    /* 3. 最近層積雪 (左低右高，右側平直延伸至頂部) - 維持不變 */
+    /* 3. 最近層積雪 (左低右高，寬度 120%，圓滑曲線) - 維持不變 */
     .snow-layer-3 {
         background-color: #ffffff; 
-        z-index: 2; 
+        z-index: 2; /* 最前面 */
         filter: blur(0.5px); 
-        width: 70%; 
-        height: 100%; 
-        
-        /* 核心：使用 clip-path 創建斜切線條 */
-        clip-path: polygon(
-            0% 100%,  
-            70% 100%, 
-            70% 0%,   /* 沒入邊框 */
-            0% 100%    
-        );
-        
-        /* 輕微向下推，並向右側傾斜 */
-        transform: translateY(10px) skewY(-2deg); 
+
+        width: 120%; 
+        left: -20%;
+        height: 800px; 
+
+        /* 關鍵：創造一個巨大的左低右高的四分之一弧 */
+        border-radius: 0 0 0 0 / 0 0 0 0;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 100% 800px; 
+
+        /* 調整垂直位置：露出 150px 高度 */
+        transform: translateY(650px); 
     }
     
-    /* === ❄️ 底部積雪效果 CSS 結束 (已移除浮動動畫) === */
+    /* === ❄️ 底部積雪效果 CSS 結束 === */
     h1 {
         color: #ff7675; /* 搭配深藍背景，使用暖色系 */
         font-size: 2rem;
@@ -619,6 +620,7 @@
     </script>
 </body>
 </html>
+
 
 
 
