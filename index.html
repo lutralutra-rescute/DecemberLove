@@ -21,7 +21,7 @@
         overflow-x: hidden; 
     }
 
-/* === ❄️ 底部積雪效果 CSS (完全貼合底部且靜止、平直版本) === */
+/* === ❄️ 底部積雪效果 CSS (保留層次堆疊，但底部平直版本) === */
 
     /* 定義積雪的共用樣式 */
     body::before, body::after, .snow-layer-3 {
@@ -33,37 +33,40 @@
         pointer-events: none;
     }
 
-    /* 1. 最遠層積雪 (稍微灰一點，較模糊，高度較低) */
+    /* 1. 最遠層積雪 (有弧度，但底部平直) */
     body::before {
         background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
         height: 80px; 
         z-index: 0; 
         filter: blur(5px); /* 更模糊 */
-        border-radius: 0; /* 移除弧度，變為平直 */
+        /* ❗ 關鍵修改：設置上邊緣為圓弧，下邊緣為直角 */
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
         transform: translateY(0); /* 完全貼合底部 */
     }
 
-    /* 2. 中間層積雪 (白色，適中模糊，中等高度) */
+    /* 2. 中間層積雪 (有弧度，但底部平直) */
     body::after {
         background-color: rgba(255, 255, 255, 0.9); /* 純白 */
         height: 100px; 
         z-index: 1; /* 稍微高一點 */
         filter: blur(3px); 
-        border-radius: 0; /* 移除弧度，變為平直 */
+        /* ❗ 關鍵修改：設置上邊緣為圓弧，下邊緣為直角 */
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0;
         transform: translateY(0); /* 完全貼合底部 */
     }
 
-    /* 3. 最近層積雪 (使用新的 Div 元素) */
+    /* 3. 最近層積雪 (作為最平直的基底層) */
     .snow-layer-3 {
         background-color: #ffffff; /* 最白 */
         height: 120px; 
         z-index: 2; /* 最上層的底部積雪 */
         filter: blur(1px); /* 幾乎不模糊 */
-        width: 100%; /* 讓它填滿整個底部 */
+        width: 65%; /* 減少寬度，維持右側凸顯的雪堆感 */
         right: 0;
-        left: 0; /* 確保左右都對齊 */
-        border-radius: 0; /* 移除弧度，變為平直 */
-        transform: rotate(0deg) translateY(0); /* 保持移除旋轉並完全貼合底部 */
+        left: auto; /* 確保 right 生效 */
+        /* ❗ 關鍵修改：使用一個較小的弧度，讓左側看起來像堆積的雪邊緣 */
+        border-radius: 50% 0 0 0 / 100% 0 0 0; 
+        transform: rotate(0deg) translateY(0); 
     }
     
     /* === ❄️ 底部積雪效果 CSS 結束 (已移除浮動動畫) === */
@@ -601,6 +604,7 @@
     </script>
 </body>
 </html>
+
 
 
 
