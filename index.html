@@ -21,7 +21,7 @@
         overflow-x: hidden; 
     }
 
-/* === ❄️ 底部積雪效果 CSS (最遠層修正：左低右高，圓滑，隱藏在後) === */
+/* === ❄️ 底部積雪效果 CSS (最遠層右側高度調整至 25% 頁面高度) === */
 
     /* 定義積雪的共用樣式 */
     .snow-layer-1, .snow-layer-2, .snow-layer-3 {
@@ -31,13 +31,12 @@
         pointer-events: none;
     }
 
-    /* 1. 最遠層積雪 (左低右高，寬度 150%，圓滑曲線) - 關鍵修正 transform */
+    /* 1. 最遠層積雪 (左低右高，右側高點調整 - 關鍵修正 transform) */
     .snow-layer-1 {
         background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
         z-index: 0; /* 最遠層 */
         filter: blur(5px); 
         
-        /* 寬度擴大，並向左偏移，讓弧度從左側開始上升 */
         width: 150%; 
         left: -50%;
         height: 600px; /* 元素高度 */
@@ -47,9 +46,8 @@
         border-bottom-right-radius: 0;
         border-top-right-radius: 100% 600px; /* 右上角巨大弧度 */
         
-        /* ❗ 修正：將元素推回底部，使其只露出最底部的上升曲線 */
-        /* 露出高度約 50px - 80px，隱藏在中間層之後 */
-        transform: translateY(520px); 
+        /* ❗ 修正：將元素向上推動，使其最高點露出約 200px (600 - 400 = 200px) */
+        transform: translateY(400px); 
     }
 
     /* 2. 中間層積雪 (保持頂部圓弧，底部平直) - 使用 body::before 偽元素 */
@@ -77,7 +75,6 @@
         left: -20%;
         height: 800px; 
 
-        /* 關鍵：創造一個巨大的左低右高的四分之一弧 */
         border-radius: 0 0 0 0 / 0 0 0 0;
         border-bottom-right-radius: 0;
         border-top-right-radius: 100% 800px; 
@@ -620,6 +617,7 @@
     </script>
 </body>
 </html>
+
 
 
 
