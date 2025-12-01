@@ -1,9 +1,10 @@
+HTML
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎄 專屬妳的 12 月倒數情書 ❤️</title>
+    <title>🎄 專屬你的 12 月倒數情書 ❤️</title>
     <style>
         body {
             font-family: 'Microsoft JhengHei', sans-serif;
@@ -192,15 +193,17 @@
     </div>
 
     <script>
+        // 請把引號內的網址換成你的 Google Drive 或 Dropbox 分享連結
+const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5bvKNYL19MItTG2u?usp=sharing";
         // 為了方便您現在測試，我加了一個「測試模式」
         // 如果設為 true：所有日期都會解鎖 (方便您檢查)
         // 如果設為 false：會抓取真實日期 (送給女友時請改成 false)
-        const TEST_MODE = false; 
+        const TEST_MODE = true; 
 
         // 31 句台詞資料庫
         const messages = {
-            1: "12月了耶。這個月你唯一的任務就是把時間空下來陪我。……幹嘛不說話？你該不會不想吧？",
-            2: "天氣變冷了，你是笨蛋嗎？穿這麼少是想感冒傳染給我喔？……嘖，外套借你啦，要記得感謝我喔。",
+            1: "12月的第一天，只是想告訴你，這個月因為有你，冬天好像就沒有那麼冷了...記得把接下來的每一天都空給我呦～",
+            2: "天氣變冷了，記得多穿一點喔...你是笨蛋嗎？穿這麼少萬一感冒了怎麼辦...真是的，外套借你啦，要記得感謝我喔。",
             3: "今天的咖啡好苦喔……就像你昨天沒回我訊息一樣讓人不爽。開玩笑的啦，但你今天最好表現好一點喔。",
             4: "把手伸出來。幹嘛？我要檢查你的手是不是冰的啊。……哼，我的手比較暖吧？借你牽一下，別想太多。",
             5: "我今天換了新香水，你應該沒發現吧？……笨蛋。靠近一點聞啦！……好聞嗎？這可是為了某人挑的耶。",
@@ -286,11 +289,13 @@
             
             // 播放音檔
             playAudioFile(day, () => {
-                element.classList.remove('playing'); // 播放完畢
+                element.classList.remove('playing'); 
             }, () => {
-                element.classList.add('playing'); // 開始播放
-                showModal(messages[day] || "（這天還沒有寫悄悄話喔）");
+                element.classList.add('playing'); 
+                // ↓↓↓ 重點是下面這一行，多傳入一個 day ↓↓↓
+                showModal(messages[day] || "（這天還沒有寫悄悄話喔）", day);
             });
+
         }
 
         // 連續播放功能 (從第1天播到已解鎖的最後一天)
@@ -331,8 +336,8 @@
                 });
 
                 element.classList.remove('playing');
-                // 每個音檔之間稍微停頓 1 秒，更有氣氛
-                if(isPlayingSequence) await new Promise(r => setTimeout(r, 1000));
+                // 每個音檔之間稍微停頓 3 秒，更有氣氛
+                if(isPlayingSequence) await new Promise(r => setTimeout(r, 3000));
             }
 
             stopSequence(); // 全部播完，重置狀態
@@ -369,10 +374,45 @@
             closeModal();
         }
 
-        function showModal(text) {
+        function showModal(text, day) { // 注意這裡多了一個 day 參數
+            // 設定文字內容
             msgContent.innerText = text;
+
+            // 檢查是否為第 31 天，如果是，加入下載按鈕
+            const existingBtn = document.getElementById('download-btn');
+            if (existingBtn) existingBtn.remove(); // 先移除舊按鈕避免重複
+
+            if (day === 31) {
+                const downloadBtn = document.createElement('a');
+                downloadBtn.id = 'download-btn';
+                downloadBtn.href = DOWNLOAD_LINK;
+                downloadBtn.target = "_blank"; // 在新分頁開啟
+                downloadBtn.innerText = "☁️ 下載收藏我們的回憶";
+                
+                // 設定按鈕樣式 (你可以隨意調整顏色)
+                downloadBtn.style.display = "inline-block";
+                downloadBtn.style.marginTop = "15px";
+                downloadBtn.style.padding = "10px 20px";
+                downloadBtn.style.backgroundColor = "#0984e3"; // 藍色系，區別於紅色
+                downloadBtn.style.color = "white";
+                downloadBtn.style.textDecoration = "none";
+                downloadBtn.style.borderRadius = "50px";
+                downloadBtn.style.fontWeight = "bold";
+                downloadBtn.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
+                downloadBtn.style.transition = "transform 0.2s";
+
+                // 滑鼠移過去的效果
+                downloadBtn.onmouseover = () => downloadBtn.style.transform = "scale(1.05)";
+                downloadBtn.onmouseout = () => downloadBtn.style.transform = "scale(1)";
+
+                // 把按鈕加到文字下方
+                msgContent.appendChild(document.createElement('br')); // 換行
+                msgContent.appendChild(downloadBtn);
+            }
+
             modal.style.display = 'block';
         }
+
 
         function closeModal() {
             modal.style.display = 'none';
