@@ -19,14 +19,13 @@
         position: relative; 
         z-index: 1; 
         overflow-x: hidden; 
-        /* 確保 body 內容不會被 fixed 的積雪遮擋 */
     }
 
-    /* === ❄️ 積雪效果 CSS (優化分層版本) === */
+    /* === ❄️ 底部積雪效果 CSS (修復後的分層版本) === */
 
     /* 定義積雪的共用樣式 */
-    body::before, body::after, body::after-layer-2 {
-        content: '';
+    body::before, body::after, .snow-layer-3 {
+        content: ''; /* 僅適用於偽元素 */
         position: fixed;
         left: 0;
         width: 100%;
@@ -41,7 +40,7 @@
         z-index: 0; 
         filter: blur(5px); /* 更模糊 */
         border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-        transform: translateY(20px); /* 確保圓邊超出視窗 */
+        transform: translateY(20px); 
         animation: subtleWave 25s ease-in-out infinite alternate;
     }
 
@@ -56,18 +55,17 @@
         animation: subtleWave 18s ease-in-out infinite alternate-reverse;
     }
 
-    /* 3. 最近層積雪 (最白，微模糊，高度最高，用於邊角堆積) */
-    body::after-layer-2 {
-        content: '';
-        position: fixed;
-        right: 0;
-        width: 50%;
-        height: 150px;
-        bottom: 0;
+    /* 3. 最近層積雪 (使用新的 Div 元素) */
+    .snow-layer-3 {
         background-color: #ffffff; /* 最白 */
+        height: 150px;
         z-index: 2; /* 最上層的底部積雪 */
         filter: blur(1px); /* 幾乎不模糊 */
-        border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        /* 將右側堆積感獨立出來，創造不規則形狀 */
+        width: 65%; /* 減少寬度，讓右側凸顯 */
+        right: 0;
+        left: auto;
+        border-radius: 80% 0 0 0 / 100% 0 0 0; /* 讓左側邊緣圓潤，右側平直 */
         transform: rotate(3deg) translateY(5px);
         animation: subtleWaveRight 14s linear infinite alternate;
     }
@@ -83,7 +81,7 @@
         50% { transform: rotate(1deg) translateY(15px); }
         100% { transform: rotate(3deg) translateY(5px); }
     }
-    /* === ❄️ 積雪效果 CSS 結束 === */
+    /* === ❄️ 底部積雪效果 CSS 結束 === */
 
 
     h1 {
@@ -147,7 +145,7 @@
         z-index: 5; /* 確保日曆在積雪之上 */
     }
 
-/* 深色背景下，卡片調整為淺色 */
+    /* 深色背景下，卡片調整為淺色 */
     .day-box {
         background: #ecf0f1; 
         border-radius: 12px;
@@ -163,62 +161,46 @@
         transition: all 0.2s;
         border: 2px solid transparent;
         position: relative;
-        overflow: hidden; /* 防止積雪溢出方塊過多 */
+        overflow: hidden; /* 防止積雪圖片溢出方塊過多 */
     }
 
-    /* === ❄️ 優化後的卡片積雪效果 (新增或替換) === */
-    /* 卡片頂部的積雪 */
+    /* === ❄️ 使用圖片的卡片積雪效果 (替換) === */
     .day-box::before {
         content: '';
         position: absolute;
-        top: -8px; /* 稍微向上，創造堆積感 */
-        left: -5px; /* 稍微向左 */
-        width: 110%; /* 比卡片寬，增加覆蓋感 */
-        height: 20px; /* 雪堆高度 */
-        background-color: rgba(255, 255, 255, 0.95); /* 更白，略帶透明 */
-        border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 圓潤的頂部 */
-        filter: blur(0.5px); /* 微弱模糊 */
-        transform: rotate(-2deg); /* 輕微傾斜 */
-        transition: background-color 0.3s ease;
-        animation: snowSway 10s ease-in-out infinite alternate;
-        z-index: 12; /* 確保在數字和鎖頭下方，但比卡片本身高 */
+        top: -10px; /* 根據圖片高度調整 */
+        left: 0;
+        width: 100%;
+        height: 30px; /* 根據積雪圖片的實際高度調整 */
+        /* ❗ 請務必將您的積雪圖片命名為 snow_edge.png 並放在 images 資料夾中 */
+        background-image: url('images/snow_edge.png'); 
+        background-size: 100% 100%; /* 讓圖片完全覆蓋 */
+        background-repeat: no-repeat;
+        background-position: center top;
+        z-index: 12; 
+        transition: opacity 0.3s ease; 
+        filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2)); /* 增加陰影 */
+        animation: snowWobble 6s ease-in-out infinite alternate; /* 輕微晃動動畫 */
     }
 
-    /* 卡片左上角的積雪 */
+    /* 移除 .day-box::after 偽元素，確保只有圖片樣式 */
     .day-box::after {
-        content: '';
-        position: absolute;
-        top: 5px; /* 從卡片內部開始 */
-        left: -10px; /* 稍微向左外側 */
-        width: 30px; /* 小雪堆 */
-        height: 15px;
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 50%; /* 圓形小雪堆 */
-        filter: blur(0.5px);
-        transform: rotate(5deg);
-        transition: background-color 0.3s ease;
-        animation: snowSwaySmall 8s ease-in-out infinite alternate-reverse;
-        z-index: 12;
+        content: none;
     }
 
-    /* 鎖住的卡片，積雪顏色和透明度會變化 */
-    .day-box.locked::before,
-    .day-box.locked::after {
-        background-color: rgba(200, 200, 200, 0.7); /* 較暗，較透明的積雪 */
+    /* 鎖住的卡片，積雪會變得稍微暗淡 */
+    .day-box.locked::before {
+        opacity: 0.6; 
+        filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.1));
     }
 
     /* 積雪動畫 */
-    @keyframes snowSway {
-        0% { transform: rotate(-2deg) translateX(0); }
-        50% { transform: rotate(1deg) translateX(5px); }
-        100% { transform: rotate(-2deg) translateX(0); }
+    @keyframes snowWobble {
+        0% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(2px) rotate(1deg); }
+        100% { transform: translateY(0) rotate(0deg); }
     }
-    @keyframes snowSwaySmall {
-        0% { transform: rotate(5deg) translateY(0); }
-        50% { transform: rotate(2deg) translateY(3px); }
-        100% { transform: rotate(5deg) translateY(0); }
-    }
-    /* === ❄️ 卡片積雪效果結束 === */
+    /* === ❄️ 卡片積雪效果結束 (已替換為圖片模式) === */
 
 
     .day-box:hover {
@@ -262,7 +244,7 @@
         bottom: 5px;
         right: 5px;
         display: none;
-        z-index: 15; /* 確保在卡片積雪上方 */
+        z-index: 15; /* 確保在積雪圖片上方 */
         color: white; /* 鎖頭也改為淺色 */
     }
     .day-box.locked .lock-icon { display: block; }
@@ -398,6 +380,8 @@
         <div class="snow-mid"></div>
         <div class="snow-near"></div>
     </div>
+    <div class="snow-layer-3" aria-hidden="true"></div> 
+    
     <h1>🎄 專屬你的 12 月倒數情書 ❤️</h1>
     <div class="subtitle">戴上耳機，點擊今天的日期...</div>
 
@@ -421,7 +405,7 @@
         // 為了方便您現在測試，我加了一個「測試模式」
         // 如果設為 true：所有日期都會解鎖 (方便您檢查)
         // 如果設為 false：會抓取真實日期 (送給女友時請改成 false)
-        const TEST_MODE = false; 
+        const TEST_MODE = false; 
 
         // 31 句台詞資料庫
         const messages = {
@@ -633,6 +617,7 @@
     </script>
 </body>
 </html>
+
 
 
 
