@@ -8,8 +8,6 @@
         /* 網站主體樣式 */
         body {
             font-family: 'Microsoft JhengHei', sans-serif;
-            /* 建議：如果使用下雪特效，可以考慮將背景顏色改為深色，讓雪花（白色）更顯眼 */
-            /* background-color: #34495e; */
             background-color: #34495e;
             color: #4a4a4a;
             display: flex;
@@ -18,7 +16,6 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            /* 讓內容層在雪花之下 */
             position: relative; 
             z-index: 1; 
             overflow-x: hidden; 
@@ -161,7 +158,6 @@
             line-height: 1.6;
             color: #2d3436;
             margin-bottom: 15px;
-            /* 讓換行符號生效 */
             white-space: pre-wrap;
         }
 
@@ -174,7 +170,7 @@
             cursor: pointer;
         }
         
-        /* 🎊 下載按鈕樣式 (優化新增) */
+        /* 下載按鈕樣式 */
         .download-btn {
             display: inline-block;
             margin-top: 15px;
@@ -197,42 +193,38 @@
             100% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0); }
         }
 
-        /* === ❄️ 雪花效果 CSS (新增) === */
-        /* 雪花容器 */
+        /* === ❄️ 雪花效果 CSS === */
         .snowflakes {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            pointer-events: none; /* 讓雪花不會阻擋點擊下面的內容 */
-            z-index: 9999; /* 確保雪花在最上層 */
+            height: 100vh; /* 使用 100vh 確保覆蓋整個視窗 */
+            pointer-events: none; 
+            z-index: 9999; 
             overflow: hidden; 
         }
 
         .snowflake {
-            color: #fff; /* 雪花顏色 */
-            font-size: 1.5em; /* 雪花大小 */
+            color: #fff; 
+            font-size: 1.5em; 
             font-family: Arial, sans-serif;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* 輕微陰影增加立體感 */
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); 
             position: absolute;
             top: -10%; /* 從視窗上方開始 */
-            /* ❗ 移除 opacity: 0; 讓 JS 來設定起始透明度，避免閃爍 */
-            animation: fall linear infinite; /* 套用下落動畫 */
+            animation: fall linear infinite;
         }
 
-        /* 定義雪花下落動畫 */
+        /* ❗ 修正閃爍：讓雪花相對容器下落 */
         @keyframes fall {
             to {
-                transform: translateY(100vh); 
-                /* ❗ 移除 opacity: 1; 讓透明度由 JS 統一控制 */
+                transform: translateY(100%); /* 相對於雪花自身高度的 100% */
             }
         }
         /* 瀏覽器相容性前綴 */
         @-webkit-keyframes fall {
             to {
-                -webkit-transform: translateY(100vh); 
-                /* ❗ 移除 opacity: 1; */
+                -webkit-transform: translateY(100%);
             }
         }
         /* === ❄️ 雪花效果 CSS 結束 === */
@@ -243,7 +235,7 @@
 
     <div class="snowflakes" aria-hidden="true">
         </div>
-    <h1>🎄 專屬你的 12 月倒數情書 ❤️</h1>
+    <h1>December Love</h1>
     <div class="subtitle">戴上耳機，點擊今天的日期...</div>
 
     <div class="controls">
@@ -315,7 +307,6 @@
         const realDay = now.getDate();
         
         // 決定目前解鎖到第幾天
-        // 如果是 12月，解鎖到當天；如果還沒到 12月，全是鎖住的(除非測試模式)；如果過了12月，全部解鎖
         let unlockedDay = 0;
         if (TEST_MODE) {
             unlockedDay = 31; // 測試模式全開
@@ -324,7 +315,7 @@
         } else if (realMonth > 12) {
             unlockedDay = 31;
         } else {
-            unlockedDay = 0; // 還沒到12月
+            unlockedDay = 0; 
         }
 
         // 產生 1-31 的格子
@@ -335,11 +326,9 @@
             dayBox.id = `day-${i}`;
 
             if (i <= unlockedDay) {
-                // 已解鎖的日子
-                if (i === unlockedDay) dayBox.classList.add('today'); // 今天特別標示
+                if (i === unlockedDay) dayBox.classList.add('today'); 
                 dayBox.onclick = () => playSingleVoice(i);
             } else {
-                // 未來與鎖定的日子
                 dayBox.classList.add('locked');
                 dayBox.onclick = () => alert("偷看是不行的喔！時間到了才能打開！");
             }
@@ -349,9 +338,9 @@
 
         // 播放單一語音
         function playSingleVoice(day) {
-            if (isPlayingSequence) stopSequence(); // 如果正在連續播，先停止
+            if (isPlayingSequence) stopSequence(); 
 
-            stopAudio(); // 停止當前聲音
+            stopAudio(); 
             
             const element = document.getElementById(`day-${day}`);
             
@@ -373,7 +362,7 @@
             }
 
             if (isPlayingSequence) {
-                stopSequence(); // 如果已經在播，再次點擊則停止
+                stopSequence(); 
                 return;
             }
 
@@ -385,10 +374,8 @@
             for (let i = 1; i <= unlockedDay; i++) {
                 if (!isPlayingSequence) break; // 中斷檢查
 
-                // 高亮目前的格子
                 const element = document.getElementById(`day-${i}`);
                 element.classList.add('playing');
-                // 顯示該天的文字，並檢查是否為 31 號 (會在 showModal 裡處理下載按鈕)
                 showModal(`📅 12月${i}日：\n\n${messages[i]}`, i); 
 
                 // 等待這個音檔播完
@@ -408,9 +395,9 @@
                 if(isPlayingSequence) await new Promise(r => setTimeout(r, 3000));
             }
 
-            // ⭐ 優化: 手動重置狀態，但不關閉模態框，讓最後一天的資訊留存
+            // 手動重置狀態，但不關閉模態框，讓最後一天的資訊留存
             isPlayingSequence = false; 
-            stopAudio(); // 確保音樂停止，並清除播放中的高亮
+            stopAudio(); 
             document.getElementById('play-all-btn').innerText = "▶ 播放直到今天的回憶";
         }
 
@@ -422,7 +409,7 @@
             currentAudio.play().then(() => {
                 if(onStart) onStart();
             }).catch(error => {
-                // ⭐ 優化: 將 alert 改為 showModal 顯示錯誤
+                // 將 alert 改為 showModal 顯示錯誤
                 showModal(`📅 12月${day}日：\n\n找不到這天的錄音檔喔！\n\n請確認您的 audio 資料夾中是否有 ${day}.mp3 檔案。`, day);
                 console.error(error);
                 if(onEnd) onEnd();
@@ -447,24 +434,20 @@
         }
 
         function showModal(text, day) { 
-            // 設定文字內容
             msgContent.innerText = text;
 
-            // 檢查是否為第 31 天，如果是，加入下載按鈕
             const existingBtn = document.getElementById('download-btn');
-            if (existingBtn) existingBtn.remove(); // 先移除舊按鈕避免重複
+            if (existingBtn) existingBtn.remove(); 
 
             if (day === 31) {
                 const downloadBtn = document.createElement('a');
                 downloadBtn.id = 'download-btn';
                 downloadBtn.href = DOWNLOAD_LINK;
-                downloadBtn.target = "_blank"; // 在新分頁開啟
+                downloadBtn.target = "_blank"; 
                 downloadBtn.innerText = "☁️ 下載收藏我們的回憶";
                 
-                // 使用 CSS class 來設定樣式
                 downloadBtn.classList.add('download-btn'); 
 
-                // 把按鈕加到 modal 底部
                 modal.appendChild(downloadBtn);
             }
 
@@ -474,11 +457,10 @@
 
         function closeModal() {
             modal.style.display = 'none';
-            // 由於下載按鈕是直接加到 modal 上的，關閉時一併移除避免下次開啟時重複
             const existingBtn = document.getElementById('download-btn');
             if (existingBtn) existingBtn.remove();
             
-            if (!isPlayingSequence) { // 如果不是連續播放模式，關視窗就停音樂
+            if (!isPlayingSequence) { 
                 stopAudio();
             }
         }
@@ -486,27 +468,20 @@
         // === ❄️ 雪花效果 JavaScript (防閃爍修正) ===
         document.addEventListener('DOMContentLoaded', () => {
             const snowflakesContainer = document.querySelector('.snowflakes');
-            const numberOfSnowflakes = 50; // 您希望有多少片雪花
+            const numberOfSnowflakes = 50; 
 
             function createSnowflake() {
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
-                snowflake.textContent = (Math.random() > 0.5) ? '❅' : '❆'; // 隨機選擇雪花圖案
+                snowflake.textContent = (Math.random() > 0.5) ? '❅' : '❆'; 
                 
-                // 隨機位置
                 snowflake.style.left = Math.random() * 100 + 'vw';
-                
-                // 隨機大小
-                snowflake.style.fontSize = Math.random() * 1.5 + 0.8 + 'em'; // 0.8em 到 2.3em
-                
-                // 隨機動畫時間
-                snowflake.style.animationDuration = Math.random() * 10 + 5 + 's'; // 5s 到 15s
-                
-                // 隨機動畫延遲
+                snowflake.style.fontSize = Math.random() * 1.5 + 0.8 + 'em'; 
+                snowflake.style.animationDuration = Math.random() * 10 + 5 + 's'; 
                 snowflake.style.animationDelay = Math.random() * numberOfSnowflakes + 's';
                 
-                // ⭐ 修正閃爍問題：確保雪花在開始時就有一個穩定的透明度
-                const randomOpacity = Math.random() * 0.7 + 0.3; // 0.3 到 1.0
+                // 確保雪花在開始時就有一個穩定的透明度
+                const randomOpacity = Math.random() * 0.7 + 0.3; 
                 snowflake.style.opacity = randomOpacity; 
 
                 snowflakesContainer.appendChild(snowflake);
@@ -516,7 +491,6 @@
                     snowflake.style.left = Math.random() * 100 + 'vw';
                     snowflake.style.animationDuration = Math.random() * 10 + 5 + 's';
                     snowflake.style.fontSize = Math.random() * 1.5 + 0.8 + 'em';
-                    // 維持原有的隨機透明度
                     snowflake.style.opacity = Math.random() * 0.7 + 0.3; 
                 });
             }
