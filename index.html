@@ -217,7 +217,7 @@
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* 輕微陰影增加立體感 */
             position: absolute;
             top: -10%; /* 從視窗上方開始 */
-            opacity: 0; /* 初始不可見 */
+            /* ❗ 移除 opacity: 0; 讓 JS 來設定起始透明度，避免閃爍 */
             animation: fall linear infinite; /* 套用下落動畫 */
         }
 
@@ -225,14 +225,14 @@
         @keyframes fall {
             to {
                 transform: translateY(100vh); 
-                opacity: 1; 
+                /* ❗ 移除 opacity: 1; 讓透明度由 JS 統一控制 */
             }
         }
         /* 瀏覽器相容性前綴 */
         @-webkit-keyframes fall {
             to {
                 -webkit-transform: translateY(100vh); 
-                opacity: 1; 
+                /* ❗ 移除 opacity: 1; */
             }
         }
         /* === ❄️ 雪花效果 CSS 結束 === */
@@ -408,11 +408,10 @@
                 if(isPlayingSequence) await new Promise(r => setTimeout(r, 3000));
             }
 
-            // ⭐ 優化 2: 手動重置狀態，但不關閉模態框
+            // ⭐ 優化: 手動重置狀態，但不關閉模態框，讓最後一天的資訊留存
             isPlayingSequence = false; 
             stopAudio(); // 確保音樂停止，並清除播放中的高亮
             document.getElementById('play-all-btn').innerText = "▶ 播放直到今天的回憶";
-            // 模態框會停留在最後一天的內容
         }
 
         // 播放音檔的底層函式
@@ -423,7 +422,7 @@
             currentAudio.play().then(() => {
                 if(onStart) onStart();
             }).catch(error => {
-                // ⭐ 優化 1: 將 alert 改為 showModal 顯示錯誤
+                // ⭐ 優化: 將 alert 改為 showModal 顯示錯誤
                 showModal(`📅 12月${day}日：\n\n找不到這天的錄音檔喔！\n\n請確認您的 audio 資料夾中是否有 ${day}.mp3 檔案。`, day);
                 console.error(error);
                 if(onEnd) onEnd();
@@ -449,7 +448,6 @@
 
         function showModal(text, day) { 
             // 設定文字內容
-            // 使用 .innerHTML 以便保留換行符號
             msgContent.innerText = text;
 
             // 檢查是否為第 31 天，如果是，加入下載按鈕
@@ -466,7 +464,7 @@
                 // 使用 CSS class 來設定樣式
                 downloadBtn.classList.add('download-btn'); 
 
-                // 把按鈕加到文字下方
+                // 把按鈕加到 modal 底部
                 modal.appendChild(downloadBtn);
             }
 
@@ -485,7 +483,7 @@
             }
         }
         
-        // === ❄️ 雪花效果 JavaScript (新增) ===
+        // === ❄️ 雪花效果 JavaScript (防閃爍修正) ===
         document.addEventListener('DOMContentLoaded', () => {
             const snowflakesContainer = document.querySelector('.snowflakes');
             const numberOfSnowflakes = 50; // 您希望有多少片雪花
@@ -507,8 +505,9 @@
                 // 隨機動畫延遲
                 snowflake.style.animationDelay = Math.random() * numberOfSnowflakes + 's';
                 
-                // 隨機透明度
-                snowflake.style.opacity = Math.random() * 0.7 + 0.3; // 0.3 到 1.0
+                // ⭐ 修正閃爍問題：確保雪花在開始時就有一個穩定的透明度
+                const randomOpacity = Math.random() * 0.7 + 0.3; // 0.3 到 1.0
+                snowflake.style.opacity = randomOpacity; 
 
                 snowflakesContainer.appendChild(snowflake);
 
@@ -517,7 +516,8 @@
                     snowflake.style.left = Math.random() * 100 + 'vw';
                     snowflake.style.animationDuration = Math.random() * 10 + 5 + 's';
                     snowflake.style.fontSize = Math.random() * 1.5 + 0.8 + 'em';
-                    snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+                    // 維持原有的隨機透明度
+                    snowflake.style.opacity = Math.random() * 0.7 + 0.3; 
                 });
             }
 
