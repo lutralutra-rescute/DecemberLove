@@ -21,7 +21,7 @@
         overflow-x: hidden; 
     }
 
-    /* === ❄️ 底部積雪效果 CSS (修復後的分層版本) === */
+    /* === ❄️ 底部積雪效果 CSS (移除浮動動畫版本) === */
 
     /* 定義積雪的共用樣式 */
     body::before, body::after, .snow-layer-3 {
@@ -40,8 +40,8 @@
         z-index: 0; 
         filter: blur(5px); /* 更模糊 */
         border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        /* 移除動畫，固定位置 */
         transform: translateY(20px); 
-        animation: subtleWave 25s ease-in-out infinite alternate;
     }
 
     /* 2. 中間層積雪 (白色，適中模糊，中等高度) */
@@ -51,8 +51,8 @@
         z-index: 1; /* 稍微高一點 */
         filter: blur(3px); 
         border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        /* 移除動畫，固定位置 */
         transform: translateY(10px); 
-        animation: subtleWave 18s ease-in-out infinite alternate-reverse;
     }
 
     /* 3. 最近層積雪 (使用新的 Div 元素) */
@@ -61,27 +61,16 @@
         height: 150px;
         z-index: 2; /* 最上層的底部積雪 */
         filter: blur(1px); /* 幾乎不模糊 */
-        /* 將右側堆積感獨立出來，創造不規則形狀 */
         width: 65%; /* 減少寬度，讓右側凸顯 */
         right: 0;
         left: auto;
         border-radius: 80% 0 0 0 / 100% 0 0 0; /* 讓左側邊緣圓潤，右側平直 */
+        /* 移除動畫，固定位置 */
         transform: rotate(3deg) translateY(5px);
-        animation: subtleWaveRight 14s linear infinite alternate;
     }
     
-    /* 積雪動畫，模擬微風吹拂下的緩慢移動 */
-    @keyframes subtleWave {
-        0% { transform: scaleX(1) translateY(20px); }
-        50% { transform: scaleX(1.05) translateY(10px); }
-        100% { transform: scaleX(1) translateY(20px); }
-    }
-    @keyframes subtleWaveRight {
-        0% { transform: rotate(3deg) translateY(5px); }
-        50% { transform: rotate(1deg) translateY(15px); }
-        100% { transform: rotate(3deg) translateY(5px); }
-    }
-    /* === ❄️ 底部積雪效果 CSS 結束 === */
+    /* ❗ 已經移除 @keyframes subtleWave 和 @keyframes subtleWaveRight */
+    /* === ❄️ 底部積雪效果 CSS 結束 (已移除浮動動畫) === */
 
 
     h1 {
@@ -617,6 +606,7 @@
     </script>
 </body>
 </html>
+
 
 
 
