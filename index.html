@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎄 專屬你的 12 月倒數情書 ❤️</title>
     <style>
+        /* 網站主體樣式 */
         body {
             font-family: 'Microsoft JhengHei', sans-serif;
+            /* 建議：如果使用下雪特效，可以考慮將背景顏色改為深色，讓雪花（白色）更顯眼 */
+            /* background-color: #34495e; */
             background-color: #fdf2f2;
             color: #4a4a4a;
             display: flex;
@@ -15,6 +18,10 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
+            /* 讓內容層在雪花之下 */
+            position: relative; 
+            z-index: 1; 
+            overflow-x: hidden; 
         }
 
         h1 {
@@ -154,6 +161,8 @@
             line-height: 1.6;
             color: #2d3436;
             margin-bottom: 15px;
+            /* 讓換行符號生效 */
+            white-space: pre-wrap;
         }
 
         .close-btn {
@@ -164,16 +173,76 @@
             border-radius: 20px;
             cursor: pointer;
         }
+        
+        /* 🎊 下載按鈕樣式 (優化新增) */
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #0984e3; /* 藍色系，區別於紅色 */
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
 
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0.4); }
             70% { box-shadow: 0 0 0 10px rgba(214, 48, 49, 0); }
             100% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0); }
         }
+
+        /* === ❄️ 雪花效果 CSS (新增) === */
+        /* 雪花容器 */
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* 讓雪花不會阻擋點擊下面的內容 */
+            z-index: 9999; /* 確保雪花在最上層 */
+            overflow: hidden; 
+        }
+
+        .snowflake {
+            color: #fff; /* 雪花顏色 */
+            font-size: 1.5em; /* 雪花大小 */
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* 輕微陰影增加立體感 */
+            position: absolute;
+            top: -10%; /* 從視窗上方開始 */
+            opacity: 0; /* 初始不可見 */
+            animation: fall linear infinite; /* 套用下落動畫 */
+        }
+
+        /* 定義雪花下落動畫 */
+        @keyframes fall {
+            to {
+                transform: translateY(100vh); 
+                opacity: 1; 
+            }
+        }
+        /* 瀏覽器相容性前綴 */
+        @-webkit-keyframes fall {
+            to {
+                -webkit-transform: translateY(100vh); 
+                opacity: 1; 
+            }
+        }
+        /* === ❄️ 雪花效果 CSS 結束 === */
+
     </style>
 </head>
 <body>
 
+    <div class="snowflakes" aria-hidden="true">
+        </div>
     <h1>🎅 December Love</h1>
     <div class="subtitle">戴上耳機，點擊今天的日期...</div>
 
@@ -184,7 +253,7 @@
     </div>
 
     <div class="calendar-grid" id="calendar">
-        </div>
+    </div>
 
     <div class="message-modal" id="modal">
         <div class="message-text" id="msg-content">...</div>
@@ -193,11 +262,11 @@
 
     <script>
         // 請把引號內的網址換成你的 Google Drive 或 Dropbox 分享連結
-const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5bvKNYL19MItTG2u?usp=sharing";
+        const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5bvKNYL19MItTG2u?usp=sharing";
         // 為了方便您現在測試，我加了一個「測試模式」
         // 如果設為 true：所有日期都會解鎖 (方便您檢查)
         // 如果設為 false：會抓取真實日期 (送給女友時請改成 false)
-        const TEST_MODE = false; 
+        const TEST_MODE = false; 
 
         // 31 句台詞資料庫
         const messages = {
@@ -288,10 +357,9 @@ const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5
             
             // 播放音檔
             playAudioFile(day, () => {
-                element.classList.remove('playing'); 
+                element.classList.remove('playing'); 
             }, () => {
-                element.classList.add('playing'); 
-                // ↓↓↓ 重點是下面這一行，多傳入一個 day ↓↓↓
+                element.classList.add('playing'); 
                 showModal(messages[day] || "（這天還沒有寫悄悄話喔）", day);
             });
 
@@ -320,7 +388,8 @@ const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5
                 // 高亮目前的格子
                 const element = document.getElementById(`day-${i}`);
                 element.classList.add('playing');
-                msgContent.innerText = `📅 12月${i}日：\n\n${messages[i]}`;
+                // 顯示該天的文字，並檢查是否為 31 號 (會在 showModal 裡處理下載按鈕)
+                showModal(`📅 12月${i}日：\n\n${messages[i]}`, i); 
 
                 // 等待這個音檔播完
                 await new Promise((resolve) => {
@@ -339,7 +408,11 @@ const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5
                 if(isPlayingSequence) await new Promise(r => setTimeout(r, 3000));
             }
 
-            stopSequence(); // 全部播完，重置狀態
+            // ⭐ 優化 2: 手動重置狀態，但不關閉模態框
+            isPlayingSequence = false; 
+            stopAudio(); // 確保音樂停止，並清除播放中的高亮
+            document.getElementById('play-all-btn').innerText = "▶ 播放直到今天的回憶";
+            // 模態框會停留在最後一天的內容
         }
 
         // 播放音檔的底層函式
@@ -350,7 +423,8 @@ const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5
             currentAudio.play().then(() => {
                 if(onStart) onStart();
             }).catch(error => {
-                alert("找不到這天的錄音檔喔！(請確認 audio 資料夾)");
+                // ⭐ 優化 1: 將 alert 改為 showModal 顯示錯誤
+                showModal(`📅 12月${day}日：\n\n找不到這天的錄音檔喔！\n\n請確認您的 audio 資料夾中是否有 ${day}.mp3 檔案。`, day);
                 console.error(error);
                 if(onEnd) onEnd();
             });
@@ -373,8 +447,9 @@ const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5
             closeModal();
         }
 
-        function showModal(text, day) { // 注意這裡多了一個 day 參數
+        function showModal(text, day) { 
             // 設定文字內容
+            // 使用 .innerHTML 以便保留換行符號
             msgContent.innerText = text;
 
             // 檢查是否為第 31 天，如果是，加入下載按鈕
@@ -388,25 +463,11 @@ const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5
                 downloadBtn.target = "_blank"; // 在新分頁開啟
                 downloadBtn.innerText = "☁️ 下載收藏我們的回憶";
                 
-                // 設定按鈕樣式 (你可以隨意調整顏色)
-                downloadBtn.style.display = "inline-block";
-                downloadBtn.style.marginTop = "15px";
-                downloadBtn.style.padding = "10px 20px";
-                downloadBtn.style.backgroundColor = "#0984e3"; // 藍色系，區別於紅色
-                downloadBtn.style.color = "white";
-                downloadBtn.style.textDecoration = "none";
-                downloadBtn.style.borderRadius = "50px";
-                downloadBtn.style.fontWeight = "bold";
-                downloadBtn.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                downloadBtn.style.transition = "transform 0.2s";
-
-                // 滑鼠移過去的效果
-                downloadBtn.onmouseover = () => downloadBtn.style.transform = "scale(1.05)";
-                downloadBtn.onmouseout = () => downloadBtn.style.transform = "scale(1)";
+                // 使用 CSS class 來設定樣式
+                downloadBtn.classList.add('download-btn'); 
 
                 // 把按鈕加到文字下方
-                msgContent.appendChild(document.createElement('br')); // 換行
-                msgContent.appendChild(downloadBtn);
+                modal.appendChild(downloadBtn);
             }
 
             modal.style.display = 'block';
@@ -415,14 +476,60 @@ const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5
 
         function closeModal() {
             modal.style.display = 'none';
+            // 由於下載按鈕是直接加到 modal 上的，關閉時一併移除避免下次開啟時重複
+            const existingBtn = document.getElementById('download-btn');
+            if (existingBtn) existingBtn.remove();
+            
             if (!isPlayingSequence) { // 如果不是連續播放模式，關視窗就停音樂
                 stopAudio();
             }
         }
+        
+        // === ❄️ 雪花效果 JavaScript (新增) ===
+        document.addEventListener('DOMContentLoaded', () => {
+            const snowflakesContainer = document.querySelector('.snowflakes');
+            const numberOfSnowflakes = 50; // 您希望有多少片雪花
+
+            function createSnowflake() {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = (Math.random() > 0.5) ? '❅' : '❆'; // 隨機選擇雪花圖案
+                
+                // 隨機位置
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                
+                // 隨機大小
+                snowflake.style.fontSize = Math.random() * 1.5 + 0.8 + 'em'; // 0.8em 到 2.3em
+                
+                // 隨機動畫時間
+                snowflake.style.animationDuration = Math.random() * 10 + 5 + 's'; // 5s 到 15s
+                
+                // 隨機動畫延遲
+                snowflake.style.animationDelay = Math.random() * numberOfSnowflakes + 's';
+                
+                // 隨機透明度
+                snowflake.style.opacity = Math.random() * 0.7 + 0.3; // 0.3 到 1.0
+
+                snowflakesContainer.appendChild(snowflake);
+
+                // 當雪花落到底部後，重置它的位置 (使其循環)
+                snowflake.addEventListener('animationiteration', () => {
+                    snowflake.style.left = Math.random() * 100 + 'vw';
+                    snowflake.style.animationDuration = Math.random() * 10 + 5 + 's';
+                    snowflake.style.fontSize = Math.random() * 1.5 + 0.8 + 'em';
+                    snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+                });
+            }
+
+            for (let i = 0; i < numberOfSnowflakes; i++) {
+                createSnowflake();
+            }
+        });
+        // === ❄️ 雪花效果 JavaScript 結束 ===
+
     </script>
 </body>
 </html>
-
 
 
 
