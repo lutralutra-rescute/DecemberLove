@@ -8,7 +8,7 @@
         /* 網站主體樣式 */
         body {
             font-family: 'Microsoft JhengHei', sans-serif;
-            background-color: #34495e; /* 使用您指定的深藍色 */
+            background-color: #34495e; /* 您指定的深藍色 */
             color: white; /* 為了配合深色背景，將文字顏色改為白色或淺色 */
             display: flex;
             flex-direction: column;
@@ -20,6 +20,52 @@
             z-index: 1; 
             overflow-x: hidden; 
         }
+
+        /* === ❄️ 積雪效果 CSS === */
+        /* 為 body 元素添加偽元素來模擬積雪 */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            background-color: rgba(255, 255, 255, 0.9); /* 白色帶點透明度 */
+            bottom: -20px; /* 稍微超出視窗底部，增加圓潤感 */
+            z-index: 0; /* 在內容下方，但在雪花上方 (雪花 z-index: 9999) */
+            filter: blur(2px); /* 增加一點模糊，讓積雪看起來更自然柔軟 */
+        }
+
+        /* 左下角積雪堆 */
+        body::before {
+            left: -10%;
+            width: 70%; /* 覆蓋較大的範圍 */
+            height: 100px;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 半圓形積雪 */
+            transform: rotate(-5deg); /* 稍微傾斜，更自然 */
+            animation: accumulateLeft 15s ease-out infinite alternate; /* 增加一點點動畫效果，模擬緩慢堆積 */
+        }
+
+        /* 右下角積雪堆 */
+        body::after {
+            right: -10%;
+            width: 60%; /* 覆蓋較大的範圍 */
+            height: 120px;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* 半圓形積雪 */
+            transform: rotate(5deg); /* 稍微傾斜 */
+            animation: accumulateRight 12s ease-in-out infinite alternate-reverse; /* 另一種動畫，模擬緩慢堆積 */
+        }
+
+        /* 積雪動畫 (可選，讓積雪有一點點緩慢的堆積感) */
+        @keyframes accumulateLeft {
+            0% { transform: translateY(0px) rotate(-5deg) scaleX(1); }
+            50% { transform: translateY(-5px) rotate(-3deg) scaleX(1.02); }
+            100% { transform: translateY(0px) rotate(-5deg) scaleX(1); }
+        }
+
+        @keyframes accumulateRight {
+            0% { transform: translateY(0px) rotate(5deg) scaleX(1); }
+            50% { transform: translateY(8px) rotate(7deg) scaleX(0.98); }
+            100% { transform: translateY(0px) rotate(5deg) scaleX(1); }
+        }
+        /* === ❄️ 積雪效果 CSS 結束 === */
+
 
         h1 {
             color: #ff7675; /* 搭配深藍背景，使用暖色系 */
@@ -210,7 +256,7 @@
             width: 100%;
             height: 200vh; /* 確保有足夠的空間讓雪花下落 */
             pointer-events: none;
-            z-index: 9999;
+            z-index: 9999; /* 確保雪花在最上層 */
             animation: snowfall 30s linear infinite; /* 基礎動畫速度 */
         }
         
@@ -254,7 +300,6 @@
             position: absolute;
             top: 0;
             left: 0;
-            /* 讓他們各自獨立，但同時被 .snow-box 的動畫帶動 */
         }
 
         /* === ❄️ 雪花效果 CSS 結束 === */
@@ -268,7 +313,7 @@
         <div class="snow-mid"></div>
         <div class="snow-near"></div>
     </div>
-    <h1>🎄 專屬你的 12 月倒數情書 ❤️</h1>
+    <h1>December Love</h1>
     <div class="subtitle">戴上耳機，點擊今天的日期...</div>
 
     <div class="controls">
@@ -503,10 +548,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
