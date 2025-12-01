@@ -36,7 +36,7 @@
     /* 1. 最遠層積雪 (稍微灰一點，較模糊，高度較低) */
     body::before {
         background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
-        height: 80px; /* 稍微增加高度 */
+        height: 120px; /* 稍微增加高度 */
         z-index: 0; 
         filter: blur(5px); /* 更模糊 */
         border-radius: 50% 50% 0 0 / 100% 100% 0 0;
@@ -56,7 +56,7 @@
     /* 3. 最近層積雪 (使用新的 Div 元素) */
     .snow-layer-3 {
         background-color: #ffffff; /* 最白 */
-        height: 150px; /* 稍微增加高度 */
+        height: 80px; /* 稍微增加高度 */
         z-index: 2; /* 最上層的底部積雪 */
         filter: blur(1px); /* 幾乎不模糊 */
         width: 65%; /* 減少寬度，讓右側凸顯 */
@@ -604,6 +604,7 @@
     </script>
 </body>
 </html>
+
 
 
 
