@@ -21,9 +21,9 @@
         overflow-x: hidden; 
     }
 
-/* === ❄️ 底部積雪效果 CSS (左低右高，寬度 70% 的雪坡曲線) === */
+/* === ❄️ 底部積雪效果 CSS (最遠層反向起伏調整) === */
 
-    /* 定義積雪的共用樣式 - 保持不變 */
+    /* 定義積雪的共用樣式 */
     body::before, body::after, .snow-layer-3 {
         content: ''; 
         position: fixed;
@@ -32,18 +32,24 @@
         left: 0;
     }
 
-    /* 1. 最遠層積雪 (保持頂部圓弧，底部平直) - 保持不變 */
+    /* 1. 最遠層積雪 (左高右低，單向下降雪坡 - 關鍵修改) */
     body::before {
-        background-color: rgba(220, 220, 220, 0.8); 
-        height: 100px; 
+        background-color: rgba(220, 220, 220, 0.8); /* 淺灰 */
+        height: 400px; /* 增加高度，用於創造弧度 */
         z-index: 0; 
         filter: blur(5px); 
-        border-radius: 50% 50% 0 0 / 100% 100% 0 0; 
-        transform: translateY(0); 
-        width: 100%;
+        width: 100%; /* 填滿整個頁面寬度 */
+        
+        /* ❗ 關鍵調整：創造一個巨大的四分之一橢圓在左上角 */
+        /* 這會讓雪坡從左上角(0, 0)開始，向右下角(100%, 400px)下降 */
+        border-top-left-radius: 100% 400px; 
+        
+        /* 調整垂直位置：讓雪坡的最低點貼合底部 */
+        /* 將元素向下推 380px，只露出下降的曲線部分 */
+        transform: translateY(380px); 
     }
 
-    /* 2. 中間層積雪 (保持頂部圓弧，底部平直) - 保持不變 */
+    /* 2. 中間層積雪 (保持頂部圓弧，底部平直) - 維持不變 */
     body::after {
         background-color: rgba(255, 255, 255, 0.9); 
         height: 100px; 
@@ -54,29 +60,18 @@
         width: 100%;
     }
 
-    /* 3. 最近層積雪 (單向上升雪坡 - 關鍵修改) */
+    /* 3. 最近層積雪 (左低右高，單向上升雪坡) - 維持不變 */
     .snow-layer-3 {
         background-color: #ffffff; 
         z-index: 2; 
         filter: blur(0.5px); 
-        
-        /* ❗ 寬度 & 定位要求 */
-        width: 70%; /* 僅佔頁面 70% */
-        
-        /* ❗ 高度與曲線設定 */
-        height: 500px; /* 元素高度 */
-        
-        /* 創造一個巨大的四分之一橢圓在右上角 */
-        /* 這會讓雪坡從左下角(0, 500)平滑地升到右上角(70%, 0) */
+        width: 70%; 
+        height: 500px; 
         border-top-right-radius: 100% 500px; 
-        
-        /* ❗ 垂直位置調整 (控制右側最高點) */
-        /* 將元素向下推 300px，讓曲線最高點 (500-300 = 200px) 露出來 (約 30% 頁面高度) */
         transform: translateY(300px); 
     }
     
     /* === ❄️ 底部積雪效果 CSS 結束 (已移除浮動動畫) === */
-
     h1 {
         color: #ff7675; /* 搭配深藍背景，使用暖色系 */
         font-size: 2rem;
@@ -610,6 +605,7 @@
     </script>
 </body>
 </html>
+
 
 
 
