@@ -246,62 +246,61 @@
         100% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0); }
     }
 
-    /* === ❄️ 純 CSS 三層雪花效果 (終極版本) === */
+   /* === ❄️ 純 CSS 三層雪花效果 (終極版本) === */
 
-    /* 定義雪花下落動畫 */
+    /* 定義雪花下落動畫 (維持不變) */
     @keyframes snowfall {
         0% { transform: translateY(0); }
         100% { transform: translateY(100vh); } 
     }
 
-    /* 主容器，用於容納和移動三層雪花 */
+    /* 主容器，用於容納和移動三層雪花 (維持不變) */
     .snow-box {
         position: fixed;
-        top: -100vh; /* 從視窗外開始，確保循環平滑 */
+        top: -100vh; 
         left: 0;
         width: 100%;
-        height: 200vh; /* 確保有足夠的空間讓雪花下落 */
+        height: 200vh; 
         pointer-events: none;
-        z-index: 4; /* 在背景和日曆內容之間 */
-        animation: snowfall 30s linear infinite; /* 基礎動畫速度 */
+        z-index: 4; 
+        animation: snowfall 30s linear infinite; 
     }
     
-    /* 1. 遠景雪花 (小、慢) */
+    /* 1. 遠景雪花 (小、慢 - 調整大小) */
     .snow-far {
-        width: 1px;
-        height: 1px;
+        width: 2px; /* 從 1px 調整為 2px */
+        height: 2px; /* 從 1px 調整為 2px */
         background: transparent;
-        /* 使用 box-shadow 模擬大量雪花點 */
         box-shadow: 
             30vw 10vh 0 0 #ecf0f1, 5vw 40vh 0 0 #ecf0f1, 70vw 70vh 0 0 #ecf0f1, 95vw 100vh 0 0 #ecf0f1, 10vw 130vh 0 0 #ecf0f1, 80vw 160vh 0 0 #ecf0f1, 50vw 190vh 0 0 #ecf0f1,
             15vw 20vh 0 0 #ecf0f1, 45vw 50vh 0 0 #ecf0f1, 65vw 80vh 0 0 #ecf0f1, 90vw 110vh 0 0 #ecf0f1, 20vw 140vh 0 0 #ecf0f1, 75vw 170vh 0 0 #ecf0f1, 40vw 200vh 0 0 #ecf0f1;
         opacity: 0.5;
     }
 
-    /* 2. 中景雪花 (中、適中) */
+    /* 2. 中景雪花 (中、適中 - 調整大小) */
     .snow-mid {
-        width: 2px;
-        height: 2px;
+        width: 3px; /* 從 2px 調整為 3px */
+        height: 3px; /* 從 2px 調整為 3px */
         background: transparent;
         box-shadow: 
             10vw 5vh 0 0 #ffffff, 60vw 35vh 0 0 #ffffff, 85vw 65vh 0 0 #ffffff, 25vw 95vh 0 0 #ffffff, 70vw 125vh 0 0 #ffffff, 5vw 155vh 0 0 #ffffff, 90vw 185vh 0 0 #ffffff,
             55vw 25vh 0 0 #ffffff, 15vw 55vh 0 0 #ffffff, 80vw 85vh 0 0 #ffffff, 45vw 115vh 0 0 #ffffff, 95vw 145vh 0 0 #ffffff, 30vw 175vh 0 0 #ffffff;
         opacity: 0.8;
-        animation: snowfall 20s linear infinite; /* 比主容器快，增加層次感 */
+        animation: snowfall 20s linear infinite; 
     }
 
-    /* 3. 近景雪花 (大、快) */
+    /* 3. 近景雪花 (大、快 - 調整大小) */
     .snow-near {
-        width: 3px;
-        height: 3px;
+        width: 4px; /* 從 3px 調整為 4px */
+        height: 4px; /* 從 3px 調整為 4px */
         background: transparent;
         box-shadow: 
             50vw 15vh 0 0 #ffffff, 20vw 45vh 0 0 #ffffff, 80vw 75vh 0 0 #ffffff, 10vw 105vh 0 0 #ffffff, 65vw 135vh 0 0 #ffffff, 35vw 165vh 0 0 #ffffff, 95vw 195vh 0 0 #ffffff;
         opacity: 1;
-        animation: snowfall 15s linear infinite; /* 比中景快 */
+        animation: snowfall 15s linear infinite; 
     }
 
-    /* 讓三個雪花層級都從視窗外開始，並保持絕對定位 */
+    /* 讓三個雪花層級都從視窗外開始，並保持絕對定位 (維持不變) */
     .snow-far, .snow-mid, .snow-near {
         position: absolute;
         top: 0;
@@ -309,7 +308,6 @@
     }
 
     /* === ❄️ 雪花效果 CSS 結束 === */
-
 </style>
 </head>
 <body>
@@ -552,3 +550,4 @@
     </script>
 </body>
 </html>
+
