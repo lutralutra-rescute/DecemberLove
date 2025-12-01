@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎄 專屬妳的 12 月倒數情書 ❤️</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: #fdf2f2;
+            color: #4a4a4a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #d63031;
+            font-size: 2rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 0px #fad390;
+        }
+
+        .subtitle {
+            margin-bottom: 20px;
+            color: #636e72;
+            font-size: 1rem;
+        }
+
+        /* 控制區 */
+        .controls {
+            margin-bottom: 20px;
+        }
+
+        .play-all-btn {
+            background-color: #ff7675;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .play-all-btn:hover {
+            background-color: #d63031;
+            transform: scale(1.05);
+        }
+        
+        .play-all-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 日曆網格 */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 12px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .day-box {
+            background: white;
+            border-radius: 12px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #d63031;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .day-box:hover {
+            transform: translateY(-3px);
+            border-color: #ff7675;
+        }
+
+        /* 今天 */
+        .day-box.today {
+            background-color: #d63031;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        /* 播放中 */
+        .day-box.playing {
+            background-color: #fdcb6e;
+            color: white;
+            border-color: #ffeaa7;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        /* 尚未解鎖的日子 (未來) */
+        .day-box.locked {
+            background-color: #eee;
+            color: #bbb;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .day-box.locked:hover {
+            transform: none;
+            border-color: transparent;
+        }
+
+        /* 鎖頭圖示 */
+        .lock-icon {
+            font-size: 0.8rem;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            display: none;
+        }
+        .day-box.locked .lock-icon { display: block; }
+
+        /* 彈出文字視窗 */
+        .message-modal {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            display: none;
+            border: 2px solid #fab1a0;
+            z-index: 100;
+        }
+
+        .message-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2d3436;
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            padding: 8px 20px;
+            background-color: #d63031;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(214, 48, 49, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎅 December Love</h1>
+    <div class="subtitle">戴上耳機，點擊今天的日期...</div>
+
+    <div class="controls">
+        <button class="play-all-btn" id="play-all-btn" onclick="playAllMemories()">
+            <span>▶</span> 播放直到今天的回憶
+        </button>
+    </div>
+
+    <div class="calendar-grid" id="calendar">
+        </div>
+
+    <div class="message-modal" id="modal">
+        <div class="message-text" id="msg-content">...</div>
+        <button class="close-btn" onclick="closeModal()">關閉</button>
+    </div>
+
+    <script>
+        // 為了方便您現在測試，我加了一個「測試模式」
+        // 如果設為 true：所有日期都會解鎖 (方便您檢查)
+        // 如果設為 false：會抓取真實日期 (送給女友時請改成 false)
+        const TEST_MODE = false; 
+
+        // 31 句台詞資料庫
+        const messages = {
+            1: "12月了耶。這個月你唯一的任務就是把時間空下來陪我。……幹嘛不說話？你該不會不想吧？",
+            2: "天氣變冷了，你是笨蛋嗎？穿這麼少是想感冒傳染給我喔？……嘖，外套借你啦，要記得感謝我喔。",
+            3: "今天的咖啡好苦喔……就像你昨天沒回我訊息一樣讓人不爽。開玩笑的啦，但你今天最好表現好一點喔。",
+            4: "把手伸出來。幹嘛？我要檢查你的手是不是冰的啊。……哼，我的手比較暖吧？借你牽一下，別想太多。",
+            5: "我今天換了新香水，你應該沒發現吧？……笨蛋。靠近一點聞啦！……好聞嗎？這可是為了某人挑的耶。",
+            6: "我剛看到一個超棒的禮物，本來想買給你的，但覺得你最近表現普普。……好啦，看在你這麼乖的份上，我再考慮一下。",
+            7: "週末到了，我在沙發上留了個位置給你。你敢遲到試試看？……其實是我有點無聊了，快點來陪我啦。",
+            8: "欸，看著我的眼睛。有沒有發現今天我特別可愛？……說有！快點誇我！不然我就不理你了。",
+            9: "跟你走在一起的時候，風好像真的沒那麼大了。……這句話我只說一次喔，你沒聽到就算了。",
+            10: "已經10號了，你這個月對我的關注度好像有點下降喔？扣分扣分。……現在抱我一下可以加回來，你要不要？",
+            11: "路上的燈飾都亮了，雖然很漂亮，但覺得還是我比較好看吧？……你猶豫太久了！罰你今天都要牽著我不准放。",
+            12: "大家都忙著買東西，但我比較貪心，我只想把某個人打包帶回家。……那個人正在聽這段語音，自覺一點把自己送過來好嗎？",
+            13: "今天好冷，我才不是因為怕冷才鑽進你懷裡的，是因為……因為你穿這件外套看起來很好抱。僅此而已！",
+            14: "聽到一首情歌，覺得歌詞好肉麻喔。……但如果是你唱給我聽的話，我勉強可以接受啦。",
+            15: "12月過一半了。欸，你該不會在偷偷準備給我的驚喜吧？……如果沒有的話我會很失望喔。其實只要一張卡片我也……算了，沒事。",
+            16: "突然覺得，我對你是不是太好了？……萬一哪天你習慣了，不珍惜我怎麼辦？……哼，你敢！",
+            17: "今天工作好累，不想當大人的時候，我可以躲在你背後一下下嗎？就一下下喔，不准笑我。",
+            18: "人家說看到初雪會幸福。但我不需要初雪，因為本小姐已經在你身邊了，你已經夠幸福了吧？快說是。",
+            19: "未來的日子……你應該都有把我排進去吧？我隨便問問的啦！……但如果你敢說沒有，你就死定了。",
+            20: "聖誕節快到了，我有乖乖的喔。雖然平常愛鬧你，但我真的很乖……所以聖誕老公公會把你送給我當禮物吧？",
+            21: "（冬至）吃湯圓了嗎？小心變胖喔。……好啦好啦，就算你變胖我也……我也勉強不會嫌棄你啦。",
+            22: "我今天不想講道理，也不想裝成熟，我只想任性地賴著你。……可以嗎？拜託嘛，讓我任性一次。",
+            23: "禮物準備好了沒？我可是期待很久了。要是禮物我不喜歡，我就要咬你一口。……如果喜歡的話？那就……親你一口當回禮。",
+            24: "（平安夜）平安夜快樂。喂，手給我。……沒什麼，只是覺得今天晚上，如果不牽著你，心裡會有點空空的。",
+            25: "（聖誕節）聖誕快樂！你看，我把自己打扮得這麼漂亮陪你過節，我是不是很棒？……快摸摸我的頭誇獎我啊，笨蛋。",
+            26: "節日過完了，這幾天都在玩，有點累了。……借我靠一下充電。別動喔，讓我安靜地充個電就好。",
+            27: "回想這一年，雖然我很愛欺負你，但那是因為我喜歡看你拿我沒辦法的樣子。……你懂不懂啊？木頭人。",
+            28: "這幾天很冷，你要照顧好自己。因為如果你生病了，誰來照顧我？……所以是為了我，你要健健康康的，知道嗎？",
+            29: "跨年要去哪？算了，去哪都無所謂。重點是……要在你旁邊。這才是最重要的。",
+            30: "明年的願望清單……第一條就是「繼續欺負你」，第二條是「繼續被你寵壞」。你有意見嗎？駁回！",
+            31: "（跨年夜）最後一天了。喂，過來。……（小小聲）謝謝你今年一直包容這麼任性的我。新年快樂，明年……你絕對不可以離開我喔！打勾勾！"
+        };
+
+        const calendar = document.getElementById('calendar');
+        const modal = document.getElementById('modal');
+        const msgContent = document.getElementById('msg-content');
+        let currentAudio = null;
+        let isPlayingSequence = false; // 是否正在連續播放
+
+        // 計算現在是幾月幾號
+        const now = new Date();
+        const realMonth = now.getMonth() + 1;
+        const realDay = now.getDate();
+        
+        // 決定目前解鎖到第幾天
+        // 如果是 12月，解鎖到當天；如果還沒到 12月，全是鎖住的(除非測試模式)；如果過了12月，全部解鎖
+        let unlockedDay = 0;
+        if (TEST_MODE) {
+            unlockedDay = 31; // 測試模式全開
+        } else if (realMonth === 12) {
+            unlockedDay = realDay;
+        } else if (realMonth > 12) {
+            unlockedDay = 31;
+        } else {
+            unlockedDay = 0; // 還沒到12月
+        }
+
+        // 產生 1-31 的格子
+        for (let i = 1; i <= 31; i++) {
+            const dayBox = document.createElement('div');
+            dayBox.className = 'day-box';
+            dayBox.innerHTML = `${i} <span class="lock-icon">🔒</span>`;
+            dayBox.id = `day-${i}`;
+
+            if (i <= unlockedDay) {
+                // 已解鎖的日子
+                if (i === unlockedDay) dayBox.classList.add('today'); // 今天特別標示
+                dayBox.onclick = () => playSingleVoice(i);
+            } else {
+                // 未來與鎖定的日子
+                dayBox.classList.add('locked');
+                dayBox.onclick = () => alert("🙅‍♀️ 偷看是不行的喔！時間到了才能打開！");
+            }
+            
+            calendar.appendChild(dayBox);
+        }
+
+        // 播放單一語音
+        function playSingleVoice(day) {
+            if (isPlayingSequence) stopSequence(); // 如果正在連續播，先停止
+
+            stopAudio(); // 停止當前聲音
+            
+            const element = document.getElementById(`day-${day}`);
+            
+            // 播放音檔
+            playAudioFile(day, () => {
+                element.classList.remove('playing'); // 播放完畢
+            }, () => {
+                element.classList.add('playing'); // 開始播放
+                showModal(messages[day] || "（這天還沒有寫悄悄話喔）");
+            });
+        }
+
+        // 連續播放功能 (從第1天播到已解鎖的最後一天)
+        async function playAllMemories() {
+            if (unlockedDay === 0) {
+                alert("還沒到 12 月，沒有回憶可以播放喔！");
+                return;
+            }
+
+            if (isPlayingSequence) {
+                stopSequence(); // 如果已經在播，再次點擊則停止
+                return;
+            }
+
+            isPlayingSequence = true;
+            document.getElementById('play-all-btn').innerText = "⏹ 停止播放";
+            showModal("🎧 開始回顧我們的 12 月...");
+
+            // 使用遞迴或迴圈來依序播放
+            for (let i = 1; i <= unlockedDay; i++) {
+                if (!isPlayingSequence) break; // 中斷檢查
+
+                // 高亮目前的格子
+                const element = document.getElementById(`day-${i}`);
+                element.classList.add('playing');
+                msgContent.innerText = `📅 12月${i}日：\n\n${messages[i]}`;
+
+                // 等待這個音檔播完
+                await new Promise((resolve) => {
+                    const audioPath = `audio/${i}.mp3`;
+                    currentAudio = new Audio(audioPath);
+                    currentAudio.play().catch(e => {
+                        console.log("播放失敗或找不到檔案:", e);
+                        resolve(); // 失敗也繼續下一首
+                    });
+                    
+                    currentAudio.onended = resolve; // 播完後 resolve
+                });
+
+                element.classList.remove('playing');
+                // 每個音檔之間稍微停頓 1 秒，更有氣氛
+                if(isPlayingSequence) await new Promise(r => setTimeout(r, 1000));
+            }
+
+            stopSequence(); // 全部播完，重置狀態
+        }
+
+        // 播放音檔的底層函式
+        function playAudioFile(day, onEnd, onStart) {
+            const audioPath = `audio/${day}.mp3`;
+            currentAudio = new Audio(audioPath);
+            
+            currentAudio.play().then(() => {
+                if(onStart) onStart();
+            }).catch(error => {
+                alert("找不到這天的錄音檔喔！(請確認 audio 資料夾)");
+                console.error(error);
+                if(onEnd) onEnd();
+            });
+
+            currentAudio.onended = onEnd;
+        }
+
+        function stopAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            document.querySelectorAll('.day-box').forEach(box => box.classList.remove('playing'));
+        }
+
+        function stopSequence() {
+            isPlayingSequence = false;
+            stopAudio();
+            document.getElementById('play-all-btn').innerText = "▶ 播放直到今天的回憶";
+            closeModal();
+        }
+
+        function showModal(text) {
+            msgContent.innerText = text;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            if (!isPlayingSequence) { // 如果不是連續播放模式，關視窗就停音樂
+                stopAudio();
+            }
+        }
+    </script>
+</body>
+</html>
