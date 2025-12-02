@@ -141,7 +141,7 @@
         
         z-index: 12; 
         filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
-        animation: snowWobble 6s ease-in-out infinite alternate;
+        /* 已移除: animation: snowWobble 6s ease-in-out infinite alternate; */
     }
 
     /* 鎖住的卡片，積雪會變得稍微暗淡 */
@@ -150,12 +150,8 @@
         filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.1));
     }
 
-    /* 積雪動畫 */
-    @keyframes snowWobble {
-        0% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(2px) rotate(1deg); }
-        100% { transform: translateY(0) rotate(0deg); }
-    }
+    /* 積雪動畫 (已移除 @keyframes snowWobble) */
+    
     /* === ❄️ 卡片積雪效果結束 === */
 
 
