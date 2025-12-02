@@ -384,12 +384,13 @@
         line-height: 1; 
     }
     
-    /* 2. Lit.link (網站/連結) 圖標 - 使用 Unicode 鏈條符號 */
+    /* 2. Lit.link (網站/地球) 圖標 - 已修改為地球符號 🌐 */
     .icon-litlink::before {
-        content: '🔗'; /* Unicode 鏈條符號 */
+        content: '🌐'; /* Unicode 地球符號 */
         font-size: 28px;
-        transform: rotate(-45deg); /* 讓鏈條看起來更有動態感 */
         line-height: 1;
+        /* 調整讓地球看起來更精確地置中 */
+        transform: translateY(-2px); 
     }
 
     /* 3. YouTube 圖標 - 使用純 CSS 繪製三角形 (播放鍵) */
