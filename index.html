@@ -351,7 +351,7 @@
 
     /* === ⬇️ 社群 ICON CSS 製作區域 (風格 B: 深藍) ⬇️ === */
     .social-icon {
-        display: flex; 
+        display: flex; /* 使用 flex 方便置中 */
         justify-content: center;
         align-items: center;
         width: 60px; 
@@ -360,7 +360,7 @@
         
         /* 風格 B: 深藍色背景 */
         background-color: #4a637a; 
-        color: white; /* 符號顏色 (供X使用) */
+        color: white; /* 符號顏色 */
         font-size: 30px; /* 符號大小 */
         
         text-decoration: none;
@@ -368,7 +368,7 @@
         
         transition: transform 0.2s, box-shadow 0.2s;
         opacity: 0.8; 
-        position: relative; 
+        position: relative; /* 為了 YouTube 圖標定位 */
     }
 
     .social-icon:hover {
@@ -384,56 +384,14 @@
         line-height: 1; 
     }
     
-    /* 2. Lit.link (網站/地球) 圖標 - **優化版純 CSS 繪製單色地球** */
-    .icon-litlink {
-        color: transparent; /* 清除基礎顏色，避免影響偽元素 */
-        position: relative; 
-    }
-    
-    /* 地球外圈 (before) */
+    /* 2. Lit.link (網站/首頁) 圖標 - 已修改為白色房子符號 🏠 */
     .icon-litlink::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 34px; /* 地球尺寸 */
-        height: 34px;
-        border: 2px solid white; /* 白色邊框 */
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        box-sizing: border-box;
+        content: '🏠'; /* Unicode 房子/首頁符號 */
+        font-size: 28px;
+        line-height: 1;
+        /* 調整讓房子看起來置中 */
+        transform: translateY(-2px); 
     }
-
-    /* 經緯線 (after) - 繪製弧線 */
-    .icon-litlink::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 34px;
-        height: 34px;
-        transform: translate(-50%, -50%);
-        box-sizing: border-box;
-        border-radius: 50%; /* 確保線條能在圓內畫弧線 */
-        
-        /* 1. 水平線 (赤道) */
-        border-top: 1px solid white; 
-        border-bottom: 1px solid white;
-        
-        /* 2. 垂直弧線 (經線) - 使用 box-shadow 模擬多條線，並用 border-radius 讓線條內凹成弧形 */
-        box-shadow: 
-            /* 左弧線 */
-            -12px 0 0 0 white, 
-            /* 右弧線 */
-             12px 0 0 0 white; 
-        
-        /* 調整讓經緯線看起來更居中 */
-        transform: translate(-50%, -50%) rotate(0deg); 
-        padding: 4px; /* 增加內邊距，使線條不會貼齊圓框 */
-        width: 26px; /* 調整繪圖區域大小 */
-        height: 26px;
-    }
-
 
     /* 3. YouTube 圖標 - 使用純 CSS 繪製三角形 (播放鍵) */
     .icon-youtube::before {
@@ -731,3 +689,4 @@
     </script>
 </body>
 </html>
+
