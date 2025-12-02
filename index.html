@@ -22,10 +22,23 @@
         align-items: center;
         min-height: 100vh;
         margin: 0;
-        padding: 20px;
+        padding: 0; /* 移除 body padding */
         position: relative; 
         z-index: 1; 
-        overflow: hidden; 
+        overflow-x: hidden; /* 修正：只隱藏水平溢出，避免影響垂直內容 */
+    }
+
+    /* 新增主要內容容器，確保日曆和標題在中間，底部連結在最下方 */
+    .main-content {
+        flex-grow: 1; /* 讓內容佔滿剩餘空間 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 800px; /* 限制寬度 */
+        padding: 20px 10px; /* 內層 padding */
+        position: relative; /* 作為日曆和控制區的參考 */
+        z-index: 5;
     }
 
     /* 浮水印樣式 */
@@ -46,23 +59,17 @@
         font-size: 2rem;
         margin-bottom: 5px;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
-        position: relative;
-        z-index: 5;
     }
 
     .subtitle {
         margin-bottom: 20px;
         color: #ecf0f1; 
         font-size: 1rem;
-        position: relative;
-        z-index: 5;
     }
 
     /* 控制區 */
     .controls {
         margin-bottom: 20px;
-        position: relative;
-        z-index: 5;
     }
 
     .play-all-btn {
@@ -98,8 +105,6 @@
         gap: 12px;
         width: 100%;
         max-width: 600px;
-        position: relative;
-        z-index: 5; 
     }
 
     /* 卡片樣式 */
@@ -331,39 +336,39 @@
     }
     /* === ❄️ 雪花效果 CSS 結束 === */
 
-    /* 底部社群連結區塊 (新增) */
+    /* 底部社群連結區塊 */
     .footer-links {
-        margin-top: auto; /* 將連結推到底部 */
+        margin-top: auto; /* 讓它自動推到最下方 */
         padding: 20px 0;
         text-align: center;
         width: 100%;
         position: relative; 
-        z-index: 5; /* 確保在雪花之下但在背景之上 */
+        z-index: 5;
         display: flex;
         justify-content: center;
-        gap: 30px; /* 連結之間的間距 */
+        gap: 30px; 
     }
 
     .social-icon {
         display: block;
-        width: 60px; /* 圖標大小 */
+        width: 60px; 
         height: 60px;
-        border-radius: 50%; /* 圓形圖標 */
-        background-color: rgba(255, 255, 255, 0.9); /* 白色背景 */
+        border-radius: 50%; 
+        background-color: rgba(255, 255, 255, 0.9); 
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s, box-shadow 0.2s;
-        overflow: hidden; /* 確保圖片在圓形內 */
+        overflow: hidden; 
     }
 
     .social-icon:hover {
-        transform: translateY(-5px) scale(1.1); /* 提升並放大效果 */
-        box-shadow: 0 8px 15px rgba(255, 118, 117, 0.8); /* 增加紅色的發光效果 */
+        transform: translateY(-5px) scale(1.1); 
+        box-shadow: 0 8px 15px rgba(255, 118, 117, 0.8); 
     }
     
     .social-icon img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* 確保圖片填滿圓形 */
+        object-fit: cover; 
         border-radius: 50%;
     }
 </style>
@@ -376,18 +381,19 @@
         <div class="snow-near"></div>
     </div>
     
-    <h1>🎄 專屬你的 12 月倒數情書 ❤️</h1>
-    <div class="subtitle">戴上耳機，點擊今天的日期...</div>
+    <div class="main-content">
+        <h1>🎄 專屬你的 12 月倒數情書 ❤️</h1>
+        <div class="subtitle">戴上耳機，點擊今天的日期...</div>
 
-    <div class="controls">
-        <button class="play-all-btn" id="play-all-btn" onclick="playAllMemories()">
-            <span>▶</span> 播放直到今天的回憶
-        </button>
+        <div class="controls">
+            <button class="play-all-btn" id="play-all-btn" onclick="playAllMemories()">
+                <span>▶</span> 播放直到今天的回憶
+            </button>
+        </div>
+
+        <div class="calendar-grid" id="calendar">
+            </div>
     </div>
-
-    <div class="calendar-grid" id="calendar">
-    </div>
-
     <div class="message-modal" id="modal">
         <div class="message-text" id="msg-content">...</div>
         <img id="modal-image" class="message-image" style="display:none;" alt="回憶照片"> 
@@ -411,6 +417,8 @@
     <script>
         // 請把引號內的網址換成你的 Google Drive 或 Dropbox 分享連結
         const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5bvKNYL19MItTG2u?usp=sharing";
+        
+        // 為了今天的測試日期 (12/2/2025)，將 TEST_MODE 設定為 true 以顯示所有格子
         const TEST_MODE = false; 
 
         // 圖片資料庫
@@ -472,9 +480,7 @@
         const realDay = now.getDate();
         
         // 決定目前解鎖到第幾天
-        // (注意：因為今天是 12/2/2025，這裡假設你想測試功能，如果實際運行時是 12 月之外，需要確保邏輯正確)
         let unlockedDay = 0;
-        const TEST_MODE = false; // 預設關閉測試模式，使用真實日期
         if (TEST_MODE) {
             unlockedDay = 31; 
         } else if (realMonth === 12) {
@@ -646,3 +652,4 @@
     </script>
 </body>
 </html>
+
