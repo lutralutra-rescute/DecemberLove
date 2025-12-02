@@ -22,35 +22,35 @@
         align-items: center;
         min-height: 100vh;
         margin: 0;
-        padding: 0; /* 移除 body padding */
+        padding: 0; 
         position: relative; 
         z-index: 1; 
-        overflow-x: hidden; /* 修正：只隱藏水平溢出，避免影響垂直內容 */
+        overflow-x: hidden; 
     }
 
-    /* 新增主要內容容器，確保日曆和標題在中間，底部連結在最下方 */
+    /* 主要內容容器 */
     .main-content {
-        flex-grow: 1; /* 讓內容佔滿剩餘空間 */
+        flex-grow: 1; 
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 800px; /* 限制寬度 */
-        padding: 20px 10px; /* 內層 padding */
-        position: relative; /* 作為日曆和控制區的參考 */
+        max-width: 800px; 
+        padding: 20px 10px; 
+        position: relative; 
         z-index: 5;
     }
 
     /* 浮水印樣式 */
     .watermark {
-        position: fixed;    /* 固定在視窗上 */
-        bottom: 10px;       /* 距離底部 10px */
-        right: 15px;        /* 距離右側 15px */
-        color: #ecf0f1;     /* 淺灰色，與主題背景搭配 */
-        font-size: 0.8rem;  /* 字體大小適中 */
-        opacity: 0.5;       /* 半透明效果，不會干擾主要內容 */
-        z-index: 99;        /* 確保浮水印在雪花之上 */
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 增加陰影，提高可讀性 */
+        position: fixed;    
+        bottom: 10px;       
+        right: 15px;        
+        color: #ecf0f1;     
+        font-size: 0.8rem;  
+        opacity: 0.5;       
+        z-index: 99;        
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
     }
     
     /* 標題樣式 */
@@ -338,7 +338,7 @@
 
     /* 底部社群連結區塊 */
     .footer-links {
-        margin-top: auto; /* 讓它自動推到最下方 */
+        margin-top: auto; 
         padding: 20px 0;
         text-align: center;
         width: 100%;
@@ -349,21 +349,32 @@
         gap: 30px; 
     }
 
+    /* === ⬇️ 社群 ICON 修正區域 (移除白邊、調整透明度) ⬇️ === */
     .social-icon {
         display: block;
         width: 60px; 
         height: 60px;
         border-radius: 50%; 
-        background-color: rgba(255, 255, 255, 0.9); 
+        
+        /* 修正 1: 移除白色背景 (移除白邊) */
+        background-color: transparent; 
+        
+        /* 柔和陰影 */
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        
         transition: transform 0.2s, box-shadow 0.2s;
         overflow: hidden; 
+        
+        /* 修正 2: 調整整個 ICON 容器的透明度 */
+        opacity: 0.8; 
     }
 
     .social-icon:hover {
         transform: translateY(-5px) scale(1.1); 
         box-shadow: 0 8px 15px rgba(255, 118, 117, 0.8); 
+        opacity: 1; /* 滑鼠經過時變回完全不透明 */
     }
+    /* === ⬆️ 社群 ICON 修正區域 ⬆️ === */
     
     .social-icon img {
         width: 100%;
@@ -402,15 +413,15 @@
 
     <div class="footer-links">
         <a href="https://x.com/Lutra_rescute" target="_blank" class="social-icon" title="Lutra_rescute's X/Twitter">
-            <img src="images/icon_x.png" alt="X Icon"> 
+            <img src="images/icon_x_style2.png" alt="X Icon"> 
         </a>
         
         <a href="https://lit.link/zh-tw/lutralutra" target="_blank" class="social-icon" title="Lutra_rescute's Lit.link">
-            <img src="images/icon_litlink.png" alt="Lit.link Icon">
+            <img src="images/icon_litlink_style2.png" alt="Lit.link Icon">
         </a>
         
         <a href="https://www.youtube.com/channel/UCmyc8eVR3G9A7hjaHsLR6NQ/videos" target="_blank" class="social-icon" title="Lutra_rescute's YouTube">
-            <img src="images/icon_youtube.png" alt="YouTube Icon">
+            <img src="images/icon_youtube_style2.png" alt="YouTube Icon">
         </a>
     </div>
     <div class="watermark">CREAT BY @Lutra_rescute</div>
@@ -418,7 +429,7 @@
         // 請把引號內的網址換成你的 Google Drive 或 Dropbox 分享連結
         const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5bvKNYL19MItTG2u?usp=sharing";
         
-        // 為了今天的測試日期 (12/2/2025)，將 TEST_MODE 設定為 true 以顯示所有格子
+        // 為了今天的測試日期 (12/2/2025)，將 TEST_MODE 設定為 false
         const TEST_MODE = false; 
 
         // 圖片資料庫
@@ -652,4 +663,3 @@
     </script>
 </body>
 </html>
-
