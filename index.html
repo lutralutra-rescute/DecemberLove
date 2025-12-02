@@ -6,10 +6,11 @@
     <title>A Cozy Gift For You 🩵</title>
 <style>
     /* 網站主體樣式 */
-  body {
+    body {
         font-family: 'Microsoft JhengHei', sans-serif;
-        /* background-color: #34495e; */ /* 原有的背景顏色 */
+        /* background-color: #34495e; */
         
+        /* 使用者設定的背景圖片 */
         background-image: url('images/okumono-curtain6.png'); 
         background-size: cover; 
         background-position: center center; 
@@ -28,21 +29,18 @@
         overflow: hidden; 
     }
 
-    /* === ❌ 移除所有背景積雪 CSS (根據您的指示) === */
-    /* 由於您決定移除，相關的 .snow-layer-1, body::before, .snow-layer-3 定義已移除 */
-    
     h1 {
-        color: #ff7675; /* 搭配深藍背景，使用暖色系 */
+        color: #ff7675; 
         font-size: 2rem;
         margin-bottom: 5px;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 深色背景陰影調淡 */
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
         position: relative;
         z-index: 5;
     }
 
     .subtitle {
         margin-bottom: 20px;
-        color: #ecf0f1; /* 淺灰色 */
+        color: #ecf0f1; 
         font-size: 1rem;
         position: relative;
         z-index: 5;
@@ -89,10 +87,10 @@
         width: 100%;
         max-width: 600px;
         position: relative;
-        z-index: 5; /* 確保日曆在雪花之上 */
+        z-index: 5; 
     }
 
-    /* 深色背景下，卡片調整為淺色 */
+    /* 卡片樣式 */
     .day-box {
         background: #ecf0f1; 
         border-radius: 12px;
@@ -102,7 +100,7 @@
         align-items: center;
         font-size: 1.4rem;
         font-weight: bold;
-        color: #2c3e50; /* 深色文字 */
+        color: #2c3e50; 
         box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         cursor: pointer;
         transition: all 0.2s;
@@ -111,14 +109,14 @@
         overflow: hidden; 
     }
 
-    /* === ❄️ 純 CSS 卡片積雪效果 (替換圖片) === */
+    /* === ❄️ 純 CSS 卡片積雪效果 === */
     .day-box::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 15px; /* 積雪高度 */
+        height: 15px; 
         background-color: #ffffff;
         
         /* 圓弧曲線 */
@@ -127,11 +125,6 @@
         z-index: 12; 
         filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
         animation: snowWobble 6s ease-in-out infinite alternate;
-    }
-
-    /* 移除 .day-box::after 偽元素 (您原程式碼已移除，這裡確保沒有) */
-    .day-box::after {
-        content: none;
     }
 
     /* 鎖住的卡片，積雪會變得稍微暗淡 */
@@ -146,7 +139,7 @@
         50% { transform: translateY(2px) rotate(1deg); }
         100% { transform: translateY(0) rotate(0deg); }
     }
-    /* === ❄️ 卡片積雪效果結束 (純 CSS 版本) === */
+    /* === ❄️ 卡片積雪效果結束 === */
 
 
     .day-box:hover {
@@ -172,7 +165,7 @@
 
     /* 尚未解鎖的日子 (未來) */
     .day-box.locked {
-        background-color: #4a637a; /* 配合深色背景的鎖住顏色 */
+        background-color: #4a637a; 
         color: #95a5a6;
         cursor: not-allowed;
         box-shadow: 0 2px 4px rgba(0,0,0,0.5);
@@ -191,7 +184,7 @@
         right: 5px;
         display: none;
         z-index: 15; 
-        color: white; /* 鎖頭也改為淺色 */
+        color: white; 
     }
     .day-box.locked .lock-icon { display: block; }
 
@@ -203,7 +196,7 @@
         transform: translateX(-50%);
         width: 90%;
         max-width: 500px;
-        background-color: rgba(255, 255, 255, 0.98); /* 幾乎不透明的白色 */
+        background-color: rgba(255, 255, 255, 0.98);
         padding: 20px;
         border-radius: 20px;
         box-shadow: 0 10px 25px rgba(0,0,0,0.3);
@@ -211,6 +204,8 @@
         display: none;
         border: 2px solid #fab1a0;
         z-index: 100;
+        max-height: 80vh; 
+        overflow-y: auto; 
     }
 
     .message-text {
@@ -219,6 +214,18 @@
         color: #2d3436;
         margin-bottom: 15px;
         white-space: pre-wrap;
+    }
+
+    /* 彈出視窗內的圖片樣式 (新增) */
+    .message-image {
+        max-width: 100%;
+        max-height: 200px; 
+        height: auto;
+        border-radius: 10px;
+        margin: 10px auto;
+        display: block; 
+        object-fit: cover;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .close-btn {
@@ -235,7 +242,7 @@
         display: inline-block;
         margin-top: 15px;
         padding: 10px 20px;
-        background-color: #3498db; /* 亮藍色 */
+        background-color: #3498db; 
         color: white;
         text-decoration: none;
         border-radius: 50px;
@@ -253,15 +260,13 @@
         100% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0); }
     }
 
-   /* === ❄️ 純 CSS 三層雪花效果 (終極版本) === */
+    /* === ❄️ 純 CSS 三層雪花效果 (大雪花) === */
 
-    /* 定義雪花下落動畫 (維持不變) */
     @keyframes snowfall {
         0% { transform: translateY(0); }
         100% { transform: translateY(100vh); } 
     }
 
-    /* 主容器，用於容納和移動三層雪花 (維持不變) */
     .snow-box {
         position: fixed;
         top: -100vh; 
@@ -273,10 +278,10 @@
         animation: snowfall 30s linear infinite; 
     }
     
-    /* 1. 遠景雪花 (小、慢 - 調整大小) */
+    /* 1. 遠景雪花 (2px) */
     .snow-far {
-        width: 2px; /* 從 1px 調整為 2px */
-        height: 2px; /* 從 1px 調整為 2px */
+        width: 2px; 
+        height: 2px; 
         background: transparent;
         box-shadow: 
             30vw 10vh 0 0 #ecf0f1, 5vw 40vh 0 0 #ecf0f1, 70vw 70vh 0 0 #ecf0f1, 95vw 100vh 0 0 #ecf0f1, 10vw 130vh 0 0 #ecf0f1, 80vw 160vh 0 0 #ecf0f1, 50vw 190vh 0 0 #ecf0f1,
@@ -284,10 +289,10 @@
         opacity: 0.5;
     }
 
-    /* 2. 中景雪花 (中、適中 - 調整大小) */
+    /* 2. 中景雪花 (3px) */
     .snow-mid {
-        width: 3px; /* 從 2px 調整為 3px */
-        height: 3px; /* 從 2px 調整為 3px */
+        width: 3px; 
+        height: 3px; 
         background: transparent;
         box-shadow: 
             10vw 5vh 0 0 #ffffff, 60vw 35vh 0 0 #ffffff, 85vw 65vh 0 0 #ffffff, 25vw 95vh 0 0 #ffffff, 70vw 125vh 0 0 #ffffff, 5vw 155vh 0 0 #ffffff, 90vw 185vh 0 0 #ffffff,
@@ -296,10 +301,10 @@
         animation: snowfall 20s linear infinite; 
     }
 
-    /* 3. 近景雪花 (大、快 - 調整大小) */
+    /* 3. 近景雪花 (4px) */
     .snow-near {
-        width: 4px; /* 從 3px 調整為 4px */
-        height: 4px; /* 從 3px 調整為 4px */
+        width: 4px; 
+        height: 4px; 
         background: transparent;
         box-shadow: 
             50vw 15vh 0 0 #ffffff, 20vw 45vh 0 0 #ffffff, 80vw 75vh 0 0 #ffffff, 10vw 105vh 0 0 #ffffff, 65vw 135vh 0 0 #ffffff, 35vw 165vh 0 0 #ffffff, 95vw 195vh 0 0 #ffffff;
@@ -307,13 +312,11 @@
         animation: snowfall 15s linear infinite; 
     }
 
-    /* 讓三個雪花層級都從視窗外開始，並保持絕對定位 (維持不變) */
     .snow-far, .snow-mid, .snow-near {
         position: absolute;
         top: 0;
         left: 0;
     }
-
     /* === ❄️ 雪花效果 CSS 結束 === */
 </style>
 </head>
@@ -324,6 +327,7 @@
         <div class="snow-mid"></div>
         <div class="snow-near"></div>
     </div>
+    
     <h1>🎄 專屬你的 12 月倒數情書 ❤️</h1>
     <div class="subtitle">戴上耳機，點擊今天的日期...</div>
 
@@ -338,15 +342,24 @@
 
     <div class="message-modal" id="modal">
         <div class="message-text" id="msg-content">...</div>
+        <img id="modal-image" class="message-image" style="display:none;" alt="回憶照片"> 
         <button class="close-btn" onclick="closeModal()">關閉</button>
     </div>
 
     <script>
         // 請把引號內的網址換成你的 Google Drive 或 Dropbox 分享連結
         const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5bvKNYL19MItTG2u?usp=sharing";
-        // 為了方便您現在測試，我加了一個「測試模式」
         const TEST_MODE = false; 
 
+        // 圖片資料庫 (已新增)
+        const imageMap = {
+            // 請將檔案放在 images/ 資料夾中
+            3: 'images/3.jpg',      // 12/3 咖啡廳的照片
+            11: 'images/11.jpg',     // 12/11 聖誕裝飾的照片
+            24: 'images/24.png',     // 12/24 平安夜合照
+            31: 'images/31.gif'      // 12/31 告白圖片或影片
+        };
+        
         // 31 句台詞資料庫 (保持不變)
         const messages = {
             1: "12月的第一天，只是想告訴你，這個月因為有你，冬天好像就沒有那麼冷了……記得把接下來的每一天都空給我呦～",
@@ -386,7 +399,10 @@
         const modal = document.getElementById('modal');
         const msgContent = document.getElementById('msg-content');
         let currentAudio = null;
-        let isPlayingSequence = false; // 是否正在連續播放
+        let isPlayingSequence = false; 
+
+        // 取得圖片元素 (已新增)
+        const modalImage = document.getElementById('modal-image');
 
         // 計算現在是幾月幾號
         const now = new Date();
@@ -396,8 +412,9 @@
         // 決定目前解鎖到第幾天
         let unlockedDay = 0;
         if (TEST_MODE) {
-            unlockedDay = 31; // 測試模式全開
+            unlockedDay = 31; 
         } else if (realMonth === 12) {
+            // 由於今天是 12/2，unlockedDay 會是 2
             unlockedDay = realDay;
         } else if (realMonth > 12) {
             unlockedDay = 31;
@@ -405,7 +422,7 @@
             unlockedDay = 0; 
         }
 
-        // 產生 1-31 的格子
+        // 產生 1-31 的格子 (保持不變)
         for (let i = 1; i <= 31; i++) {
             const dayBox = document.createElement('div');
             dayBox.className = 'day-box';
@@ -423,7 +440,7 @@
             calendar.appendChild(dayBox);
         }
 
-        // 播放單一語音
+        // 播放單一語音 (保持不變)
         function playSingleVoice(day) {
             if (isPlayingSequence) stopSequence(); 
 
@@ -441,7 +458,7 @@
 
         }
 
-        // 連續播放功能 (從第1天播到已解鎖的最後一天)
+        // 連續播放功能 (保持不變)
         async function playAllMemories() {
             if (unlockedDay === 0) {
                 alert("還沒到 12 月，沒有回憶可以播放喔！");
@@ -457,38 +474,35 @@
             document.getElementById('play-all-btn').innerText = "⏹ 停止播放";
             showModal("🎧 開始回顧我們的 12 月...");
 
-            // 使用遞迴或迴圈來依序播放
             for (let i = 1; i <= unlockedDay; i++) {
-                if (!isPlayingSequence) break; // 中斷檢查
+                if (!isPlayingSequence) break; 
 
                 const element = document.getElementById(`day-${i}`);
                 element.classList.add('playing');
+                // 連續播放時也顯示圖片
                 showModal(`📅 12月${i}日：\n\n${messages[i]}`, i); 
 
-                // 等待這個音檔播完
                 await new Promise((resolve) => {
                     const audioPath = `audio/${i}.mp3`;
                     currentAudio = new Audio(audioPath);
                     currentAudio.play().catch(e => {
                         console.log("播放失敗或找不到檔案:", e);
-                        resolve(); // 失敗也繼續下一首
+                        resolve(); 
                     });
                     
-                    currentAudio.onended = resolve; // 播完後 resolve
+                    currentAudio.onended = resolve; 
                 });
 
                 element.classList.remove('playing');
-                // 每個音檔之間稍微停頓 3 秒，更有氣氛
                 if(isPlayingSequence) await new Promise(r => setTimeout(r, 3000));
             }
 
-            // 手動重置狀態，但不關閉模態框，讓最後一天的資訊留存
             isPlayingSequence = false; 
             stopAudio(); 
             document.getElementById('play-all-btn').innerText = "▶ 播放直到今天的回憶";
         }
 
-        // 播放音檔的底層函式
+        // 播放音檔的底層函式 (保持不變)
         function playAudioFile(day, onEnd, onStart) {
             const audioPath = `audio/${day}.mp3`;
             currentAudio = new Audio(audioPath);
@@ -496,7 +510,6 @@
             currentAudio.play().then(() => {
                 if(onStart) onStart();
             }).catch(error => {
-                // 將 alert 改為 showModal 顯示錯誤
                 showModal(`📅 12月${day}日：\n\n找不到這天的錄音檔喔！\n\n請確認您的 audio 資料夾中是否有 ${day}.mp3 檔案。`, day);
                 console.error(error);
                 if(onEnd) onEnd();
@@ -520,11 +533,24 @@
             closeModal();
         }
 
+        // 核心修改: showModal 函式 (已新增圖片處理邏輯)
         function showModal(text, day) { 
             msgContent.innerText = text;
 
             const existingBtn = document.getElementById('download-btn');
             if (existingBtn) existingBtn.remove(); 
+
+            // === 圖片處理區塊 (已新增) ===
+            const imagePath = imageMap[day];
+
+            if (imagePath) {
+                modalImage.src = imagePath;
+                modalImage.style.display = 'block';
+            } else {
+                modalImage.src = '';
+                modalImage.style.display = 'none';
+            }
+            // === 圖片處理區塊 結束 ===
 
             if (day === 31) {
                 const downloadBtn = document.createElement('a');
@@ -541,24 +567,21 @@
             modal.style.display = 'block';
         }
 
-
+        // 核心修改: closeModal 函式 (已新增圖片隱藏邏輯)
         function closeModal() {
             modal.style.display = 'none';
             const existingBtn = document.getElementById('download-btn');
             if (existingBtn) existingBtn.remove();
             
+            // 關閉時隱藏圖片
+            document.getElementById('modal-image').style.display = 'none';
+            document.getElementById('modal-image').src = '';
+            
             if (!isPlayingSequence) { 
                 stopAudio();
             }
         }
-        
-        // ❗ 移除了所有不必要的 JavaScript 雪花生成程式碼
 
     </script>
 </body>
 </html>
-
-
-
-
-
