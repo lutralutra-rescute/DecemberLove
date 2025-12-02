@@ -360,7 +360,7 @@
         
         /* 風格 B: 深藍色背景 */
         background-color: #4a637a; 
-        color: white; /* 符號顏色 */
+        color: white; /* 符號顏色 (供X使用) */
         font-size: 30px; /* 符號大小 */
         
         text-decoration: none;
@@ -384,47 +384,54 @@
         line-height: 1; 
     }
     
-    /* 2. Lit.link (網站/地球) 圖標 - **純 CSS 繪製單色地球** */
+    /* 2. Lit.link (網站/地球) 圖標 - **優化版純 CSS 繪製單色地球** */
     .icon-litlink {
-        /* 由於要用 before 和 after 繪圖，我們把基礎顏色放在這層 */
-        color: white; 
-        position: relative; /* 確保偽元素定位在圖標圓內 */
+        color: transparent; /* 清除基礎顏色，避免影響偽元素 */
+        position: relative; 
     }
-
+    
+    /* 地球外圈 (before) */
     .icon-litlink::before {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 30px; /* 地球大小 */
-        height: 30px;
-        border: 2px solid white; /* 地球邊框 */
+        width: 34px; /* 地球尺寸 */
+        height: 34px;
+        border: 2px solid white; /* 白色邊框 */
         border-radius: 50%;
         transform: translate(-50%, -50%);
         box-sizing: border-box;
     }
 
+    /* 經緯線 (after) - 繪製弧線 */
     .icon-litlink::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 30px;
-        height: 30px;
+        width: 34px;
+        height: 34px;
         transform: translate(-50%, -50%);
+        box-sizing: border-box;
+        border-radius: 50%; /* 確保線條能在圓內畫弧線 */
         
-        /* 繪製經緯線 */
-        /* 水平線 */
+        /* 1. 水平線 (赤道) */
         border-top: 1px solid white; 
         border-bottom: 1px solid white;
         
-        /* 兩條垂直線 - 使用 box-shadow 模擬 */
+        /* 2. 垂直弧線 (經線) - 使用 box-shadow 模擬多條線，並用 border-radius 讓線條內凹成弧形 */
         box-shadow: 
-            -10px 0 0 0 white, /* 左邊經線 */
-             10px 0 0 0 white; /* 右邊經線 */
+            /* 左弧線 */
+            -12px 0 0 0 white, 
+            /* 右弧線 */
+             12px 0 0 0 white; 
         
-        /* 讓線條在圓內對齊 */
-        box-sizing: border-box;
+        /* 調整讓經緯線看起來更居中 */
+        transform: translate(-50%, -50%) rotate(0deg); 
+        padding: 4px; /* 增加內邊距，使線條不會貼齊圓框 */
+        width: 26px; /* 調整繪圖區域大小 */
+        height: 26px;
     }
 
 
@@ -724,4 +731,3 @@
     </script>
 </body>
 </html>
-
