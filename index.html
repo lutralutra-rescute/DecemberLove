@@ -384,59 +384,51 @@
         line-height: 1; 
     }
     
-    /* 2. Lit.link (網站/首頁) 圖標 - 方案 A: 純 CSS 連結圖標 (Link) */
+/* 2. Lit.link (網站/首頁) 圖標 - 方案 C: 純 CSS 個人檔案圖標 (Profile) */
 .icon-litlink {
-    /* 重設基礎樣式，確保::before和::after可用 */
-    color: transparent; 
+    color: transparent;
     position: relative; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* 左半邊圓環 */
+/* 人像頭部 (圓形) */
 .icon-litlink::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 20px;
-    height: 20px;
-    border: 3px solid white; /* 白色線框 */
+    width: 18px;
+    height: 18px;
+    border: 2px solid white; /* 白色線框 */
     border-radius: 50%;
-    
-    /* 左上側的邊緣移除，模擬環扣效果 */
-    border-top-color: transparent;
-    border-left-color: transparent;
-    
-    /* 調整位置 */
-    transform: translate(-100%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) translateY(-10px); /* 向上移動 */
     box-sizing: border-box;
     z-index: 2;
 }
 
-/* 右半邊圓環 */
+/* 人像身體 (下半部的圓弧) */
 .icon-litlink::after {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 20px;
-    height: 20px;
-    border: 3px solid white; /* 白色線框 */
+    width: 40px;
+    height: 40px;
+    border: 2px solid white; /* 白色線框 */
     border-radius: 50%;
     
-    /* 右下側的邊緣移除，模擬環扣效果 */
-    border-bottom-color: transparent;
+    /* 僅顯示底部圓弧 */
+    border-top-color: transparent;
+    border-left-color: transparent;
     border-right-color: transparent;
-    
+
     /* 調整位置 */
-    transform: translate(0%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) translateY(10px); /* 向下移動 */
     box-sizing: border-box;
     z-index: 2;
 }
-
-
     /* 3. YouTube 圖標 - 使用純 CSS 繪製三角形 (播放鍵) */
     .icon-youtube::before {
         /* YouTube的白色播放三角形 */
@@ -733,4 +725,5 @@
     </script>
 </body>
 </html>
+
 
