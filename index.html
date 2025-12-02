@@ -384,43 +384,35 @@
         line-height: 1; 
     }
     
-    /* 2. Lit.link (網站/首頁) 圖標 - 方案 B: 純 CSS 心形圖標 (Heart) */
+    /* 2. Lit.link (網站/首頁) 圖標 - 方案 D: 純 CSS 中空圓形 (Circle) */
     .icon-litlink {
-        color: transparent; /* 清除基礎顏色 */
-        position: relative;
+        color: transparent; 
+        position: relative; 
         display: flex;
         justify-content: center;
         align-items: center;
     }
-
-    /* 心形的左圓和下方尖角 */
+    
+    /* 繪製一個中空的圓形 */
     .icon-litlink::before {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 20px;
-        height: 20px;
-        background: white; /* 白色實心填色 */
-        border-radius: 50%;
-        /* 調整位置與旋轉，形成心形的左上角和下方尖角 */
-        transform: translate(-100%, -100%) rotate(-45deg);
+        width: 30px; /* 圓的直徑 */
+        height: 30px; /* 圓的直徑 */
+        border: 3px solid white; /* 白色線框，控制線條粗細 */
+        border-radius: 50%; /* 圓形 */
+        
+        /* 完美置中 */
+        transform: translate(-50%, -50%); 
+        box-sizing: border-box;
         z-index: 2;
     }
-
-    /* 心形的右圓 */
+    
+    /* 清除 ::after */
     .icon-litlink::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 20px;
-        height: 20px;
-        background: white; /* 白色實心填色 */
-        border-radius: 50%;
-        /* 調整位置與旋轉，形成心形的右上角 */
-        transform: translate(0%, -100%) rotate(45deg);
-        z-index: 2;
+        content: none;
     }
 
 
@@ -475,7 +467,7 @@
         <a href="https://x.com/Lutra_rescute" target="_blank" class="social-icon icon-x" title="Lutra_rescute's X/Twitter">
         </a>
         
-        <a href="https://lit.link/zh-tw/lutralutra" target="_blank" class="social-icon icon-litlink" title="Lutra_rescute's Lit.link (我們的愛心主頁)">
+        <a href="https://lit.link/zh-tw/lutralutra" target="_blank" class="social-icon icon-litlink" title="Lutra_rescute's Lit.link (首頁)">
         </a>
         
         <a href="https://www.youtube.com/channel/UCmyc8eVR3G9A7hjaHsLR6NQ/videos" target="_blank" class="social-icon icon-youtube" title="Lutra_rescute's YouTube">
