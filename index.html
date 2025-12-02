@@ -368,7 +368,7 @@
         
         transition: transform 0.2s, box-shadow 0.2s;
         opacity: 0.8; 
-        position: relative; /* 為了 YouTube 圖標定位 */
+        position: relative; /* 為了圖標定位 */
     }
 
     .social-icon:hover {
@@ -384,14 +384,44 @@
         line-height: 1; 
     }
     
-    /* 2. Lit.link (網站/首頁) 圖標 - 已修改為白色房子符號 🏠 */
-    .icon-litlink::before {
-        content: '🏠'; /* Unicode 房子/首頁符號 */
-        font-size: 28px;
-        line-height: 1;
-        /* 調整讓房子看起來置中 */
-        transform: translateY(-2px); 
+    /* 2. Lit.link (網站/首頁) 圖標 - **純 CSS 繪製線框房子** */
+    .icon-litlink {
+        color: transparent; /* 清除基礎顏色 */
+        position: relative; 
     }
+
+    /* 房子主體 (屋身) - 線框 */
+    .icon-litlink::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 28px; /* 寬度 */
+        height: 22px; /* 高度 */
+        border: 2px solid white; /* 白色線框 */
+        border-radius: 4px; /* 輕微圓角 */
+        transform: translate(-50%, -50%) translateY(4px); /* 向上調整，為屋頂留空間 */
+        box-sizing: border-box;
+        z-index: 2;
+    }
+
+    /* 屋頂 (三角形) */
+    .icon-litlink::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        /* 繪製三角形屋頂 */
+        border-left: 17px solid transparent; 
+        border-right: 17px solid transparent; 
+        border-bottom: 15px solid white; /* 屋頂實心填色 */
+        /* 調整屋頂位置，使其位於屋身上方 */
+        transform: translate(-50%, -50%) translateY(-18px); 
+        z-index: 3;
+    }
+
 
     /* 3. YouTube 圖標 - 使用純 CSS 繪製三角形 (播放鍵) */
     .icon-youtube::before {
@@ -689,4 +719,3 @@
     </script>
 </body>
 </html>
-
