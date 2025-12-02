@@ -384,51 +384,46 @@
         line-height: 1; 
     }
     
-/* 2. Lit.link (網站/首頁) 圖標 - 方案 C: 純 CSS 個人檔案圖標 (Profile) */
-.icon-litlink {
-    color: transparent;
-    position: relative; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    /* 2. Lit.link (網站/首頁) 圖標 - 方案 B: 純 CSS 心形圖標 (Heart) */
+    .icon-litlink {
+        color: transparent; /* 清除基礎顏色 */
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-/* 人像頭部 (圓形) */
-.icon-litlink::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 18px;
-    height: 18px;
-    border: 2px solid white; /* 白色線框 */
-    border-radius: 50%;
-    transform: translate(-50%, -50%) translateY(-10px); /* 向上移動 */
-    box-sizing: border-box;
-    z-index: 2;
-}
+    /* 心形的左圓和下方尖角 */
+    .icon-litlink::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: white; /* 白色實心填色 */
+        border-radius: 50%;
+        /* 調整位置與旋轉，形成心形的左上角和下方尖角 */
+        transform: translate(-100%, -100%) rotate(-45deg);
+        z-index: 2;
+    }
 
-/* 人像身體 (下半部的圓弧) */
-.icon-litlink::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 40px;
-    height: 40px;
-    border: 2px solid white; /* 白色線框 */
-    border-radius: 50%;
-    
-    /* 僅顯示底部圓弧 */
-    border-top-color: transparent;
-    border-left-color: transparent;
-    border-right-color: transparent;
+    /* 心形的右圓 */
+    .icon-litlink::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: white; /* 白色實心填色 */
+        border-radius: 50%;
+        /* 調整位置與旋轉，形成心形的右上角 */
+        transform: translate(0%, -100%) rotate(45deg);
+        z-index: 2;
+    }
 
-    /* 調整位置 */
-    transform: translate(-50%, -50%) translateY(10px); /* 向下移動 */
-    box-sizing: border-box;
-    z-index: 2;
-}
+
     /* 3. YouTube 圖標 - 使用純 CSS 繪製三角形 (播放鍵) */
     .icon-youtube::before {
         /* YouTube的白色播放三角形 */
@@ -480,7 +475,7 @@
         <a href="https://x.com/Lutra_rescute" target="_blank" class="social-icon icon-x" title="Lutra_rescute's X/Twitter">
         </a>
         
-        <a href="https://lit.link/zh-tw/lutralutra" target="_blank" class="social-icon icon-litlink" title="Lutra_rescute's Lit.link">
+        <a href="https://lit.link/zh-tw/lutralutra" target="_blank" class="social-icon icon-litlink" title="Lutra_rescute's Lit.link (我們的愛心主頁)">
         </a>
         
         <a href="https://www.youtube.com/channel/UCmyc8eVR3G9A7hjaHsLR6NQ/videos" target="_blank" class="social-icon icon-youtube" title="Lutra_rescute's YouTube">
@@ -725,5 +720,3 @@
     </script>
 </body>
 </html>
-
-
