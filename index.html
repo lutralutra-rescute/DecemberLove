@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Cozy Gift For You 🩵</title>
 <style>
     /* 網站主體樣式 */
     body {
@@ -20,6 +26,20 @@
         position: relative; 
         z-index: 1; 
         overflow-x: hidden; 
+        
+        /* 🛡️ 新增：禁止選取文字 (用於防止複製) */
+        user-select: none; /* 標準屬性 */
+        -webkit-user-select: none; /* Safari, Chrome */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE/Edge */
+    }
+    
+    /* 確保彈出視窗內的文字可以選取 (使用者體驗考量，但如果絕對禁止複製，可以刪除這一段) */
+    .message-modal {
+        user-select: text;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
     }
 
     /* 主要內容容器 */
@@ -45,6 +65,10 @@
         opacity: 0.5;       
         z-index: 99;        
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+        user-select: none; /* 浮水印也禁止選取 */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
     }
     
     /* 標題樣式 */
@@ -704,7 +728,14 @@
                 stopAudio();
             }
         }
-
+        
+        // 🛡️ 新增：禁止滑鼠右鍵功能 (用於防止圖片儲存)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault(); // 阻止瀏覽器顯示預設的右鍵選單
+            alert('內容受版權保護，禁止右鍵！'); // 可選：給予使用者提示
+        });
+        // 雖然 CSS 已經阻止了大部分文字選取，但這個功能主要保護圖片，並提供提示。
+        
     </script>
 </body>
 </html>
