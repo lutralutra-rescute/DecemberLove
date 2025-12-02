@@ -6,9 +6,16 @@
     <title>A Cozy Gift For You 🩵</title>
 <style>
     /* 網站主體樣式 */
-    body {
+   body {
         font-family: 'Microsoft JhengHei', sans-serif;
-        background-color: #34495e; /* 深藍色 */
+        /* background-color: #34495e; */ /* 原有的背景顏色 */
+        
+        background-image: url('images/my_winter_bg.png'); 
+        background-size: cover; 
+        background-position: center center; 
+        background-repeat: no-repeat; 
+        background-attachment: fixed; 
+
         color: white; 
         display: flex;
         flex-direction: column;
@@ -16,9 +23,9 @@
         min-height: 100vh;
         margin: 0;
         padding: 20px;
-        position: relative; /* 為了雪花動畫定位 */
+        position: relative; 
         z-index: 1; 
-        overflow: hidden; /* 防止雪花或橫向捲軸影響佈局 */
+        overflow: hidden; 
     }
 
     /* === ❌ 移除所有背景積雪 CSS (根據您的指示) === */
@@ -550,4 +557,5 @@
     </script>
 </body>
 </html>
+
 
