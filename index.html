@@ -61,9 +61,11 @@
     
     h1 {
         color: #ff7675; 
-        font-size: 2rem;
+        font-size: 1.8rem;
         margin-bottom: 5px;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+        text-align: center;
+        line-height: 1.2;
     }
 
     .subtitle {
@@ -322,7 +324,10 @@
     </div>
     
     <div class="main-content">
-        <h1 id="main-title">✨ 2025：我們的冬日情書 ✨</h1>
+        <h1 id="main-title">
+            <span style="font-size: 0.5em; display: block; opacity: 0.8; letter-spacing: 2px; margin-bottom: 4px;">2025 MEMORIES</span>
+            我們的冬日情書 ✨
+        </h1>
         <div class="subtitle">那些閃閃發光的日子，都在這裡...</div>
 
         <div class="controls">
@@ -366,12 +371,12 @@
             6: "嗯……這個很適合拿來當歐咪呀給呢，感覺露軍會喜歡……嗯？你的呢？當然也有啦～才不會少了你的那份呢。",
             7: "周末就是想跟你窩在沙發上一整天。就算什麼都不做，看著你也覺得很幸福呢……嘿嘿，沒錯！我想你了，快點來陪我啦。",
             8: "新的一週來啦～希望這個星期也能和你一起開開心心！",
-            9: "閉上眼睛許個願，希望明天一張開眼，就能看到你傻傻的笑臉。晚安，祝你有個好夢。",
+            9: "閉上眼睛許個願，希望明天一張開眼，就能看到你傻傻的笑臉.晚安，祝你有個好夢。",
             10: "已經10號了，我對你的喜歡，好像又比月初多了一點點。那麼你呢？也有更喜歡露恰了嗎？",
             11: "今天在路上看到好多聖誕節裝飾喔，那些點亮的小燈泡就像星星一樣美麗……如果可以跟你一起去看的話，肯定會更開心～",
             12: "最近大家都大包小包的、買了好多東西喔。但是露恰只想把某個人打包帶回家，而那個笨蛋現在正在聽這段語音……真是的，有點自覺把自己外送過來好嗎？",
             13: "好冷喔～好想吃火鍋～齁喲，什麼叫做露恰小獺胃又吃不完，有你陪我一起吃不就可以了嗎？",
-            14: "哼哼♪……嗯？啊，就是剛剛呀～露恰聽到一首旋律還蠻好聽的歌，感覺好像可以之後歌回的時候唱呢。或者，你想要唱給露恰聽的話，也不是不可以喔～",
+            14: "哼哼♪……密？啊，就是剛剛呀～露恰聽到一首旋律還蠻好聽的歌，感覺好像可以之後歌回的時候唱呢。或者，你想要唱給露恰聽的話，也不是不可以喔～",
             15: "12月已經過了一半了耶，準備好把你的聖誕節、還有你的心，通通交給我了嗎？",
             16: "雖然還沒到聖誕節，但露恰好像已經收到最好的禮物了……嗯，就是你呀。",
             17: "今天好累喔～忙了一整天，感覺都快要斷電了……可以……讓我抱一下嗎？唔，露恰只是想充充電嘛！就一下下……唉呦你不要笑啦！",
@@ -409,7 +414,15 @@
             unlockedDay = 31; 
         } else if (realyear > 2025) {
             unlockedDay = 31;
-
+            // 2026 年自動更新為回顧模式文字
+            document.getElementById('main-title').innerHTML = `
+                <span style="font-size: 0.5em; display: block; opacity: 0.8; letter-spacing: 2px; margin-bottom: 4px;">2025 MEMORIES</span>
+                我們的 12 月回憶 🩵
+            `;
+            document.querySelector('.subtitle').innerText = "那是個特別溫暖的冬天，對吧？";
+            document.getElementById('play-all-btn').innerHTML = "<span>▶</span> 重新播放 2025 的所有語音";
+        } else if (realyear === 2025 && realMonth === 12) {
+            unlockedDay = realDay;
         }
 
         // 產生格子
@@ -443,7 +456,7 @@
 
         async function playAllMemories() {
             if (unlockedDay === 0) {
-                alert("還沒到 12 月，沒有回憶可以播放喔！");
+                alert("還沒到播放的時間喔！");
                 return;
             }
             if (isPlayingSequence) { stopSequence(); return; }
@@ -466,12 +479,12 @@
                 });
 
                 element.classList.remove('playing');
-                if(isPlayingSequence) await new Promise(r => setTimeout(r, 3000));
+                if(isPlayingSequence) await new Promise(r => setTimeout(r, 2000));
             }
 
             isPlayingSequence = false; 
             stopAudio(); 
-            document.getElementById('play-all-btn').innerText = "▶ 播放直到今天的回憶";
+            document.getElementById('play-all-btn').innerText = "▶ 重新播放所有回憶";
         }
 
         function playAudioFile(day, onEnd, onStart) {
@@ -494,7 +507,7 @@
         function stopSequence() {
             isPlayingSequence = false;
             stopAudio();
-            document.getElementById('play-all-btn').innerText = "▶ 播放直到今天的回憶";
+            document.getElementById('play-all-btn').innerText = "▶ 重新播放所有回憶";
             closeModal();
         }
 
@@ -532,7 +545,3 @@
     </script>
 </body>
 </html>
-
-
-
-
