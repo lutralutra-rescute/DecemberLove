@@ -154,7 +154,7 @@
             <div class="year-tag">2025 MEMORIES</div>
         </div>
 
-        <h1 id="main-title">我們的冬日情書 ✨</h1>
+        <h1 id="main-title">✨ 我們的12月冬日情書 ✨</h1>
         <div class="subtitle">那些閃閃發光的日子，都在這裡...</div>
 
         <div class="controls">
@@ -189,32 +189,5 @@
         const realDay = now.getDate();
 
         let unlockedDay = 0;
-        // 進入 2026 年的邏輯
-        if (realyear > 2025) {
-            unlockedDay = 31;
-            document.getElementById('main-title').innerText = "我們的 12 月回憶 🩵";
-            document.querySelector('.subtitle').innerText = "那是個特別溫暖的冬天，對吧？";
-            document.getElementById('play-all-btn').innerHTML = "<span>▶</span> 重新播放 2025 所有語音";
-        } else if (realyear === 2025 && realMonth === 12) {
-            unlockedDay = realDay;
-        }
-
-        const calendar = document.getElementById('calendar');
-        for (let i = 1; i <= 31; i++) {
-            const dayBox = document.createElement('div');
-            dayBox.className = 'day-box';
-            dayBox.innerHTML = `${i} <span class="lock-icon">🔒</span>`;
-            if (i <= unlockedDay) {
-                dayBox.onclick = () => playSingleVoice(i);
-            } else {
-                dayBox.classList.add('locked');
-            }
-            calendar.appendChild(dayBox);
-        }
-
-        // ... (其餘播放邏輯 playSingleVoice, playAllMemories, showModal 等保持不變) ...
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
-    </script>
-</body>
-</html>
+      
 
