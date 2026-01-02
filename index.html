@@ -55,19 +55,6 @@
         z-index: 10;
     }
 
-    /* 書籤底部的 V 型剪裁 */
-    .year-tag::after {
-        content: "";
-        position: absolute;
-        bottom: -15px;
-        left: 0;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 15px 23px 0 23px; /* 寬度需手動微調配合 padding */
-        border-color: #ff7675 transparent transparent transparent;
-    }
-
 /* 書籤上方的小鉚釘圓孔 */
     .year-tag::before {
         content: "";
@@ -367,4 +354,5 @@
     </script>
 </body>
 </html>
+
 
