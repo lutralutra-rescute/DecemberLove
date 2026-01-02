@@ -556,7 +556,8 @@
 
         // 計算現在是幾月幾號
         const now = new Date();
-        const realMonth = now.getMonth() + 1;
+        const realyear = now.getFullYear();
+                const realMouth = now.getMouth()+ 1;
         const realDay = now.getDate();
         
         // 決定目前解鎖到第幾天
@@ -565,7 +566,7 @@
             unlockedDay = 31; 
         } else if (realMonth === 12) {
             unlockedDay = realDay;
-        } else if (realMonth > 12) {
+        } else if (realMonth > 12 || realyear > 2025) {
             unlockedDay = 31;
         } else {
             unlockedDay = 0; 
@@ -738,6 +739,7 @@
     </script>
 </body>
 </html>
+
 
 
 
