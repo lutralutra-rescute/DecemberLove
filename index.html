@@ -8,14 +8,11 @@
     /* 網站主體樣式 */
     body {
         font-family: 'Microsoft JhengHei', sans-serif;
-        
-        /* 使用者設定的背景圖片 */
         background-image: url('images/okumono-curtain6.png'); 
         background-size: cover; 
         background-position: center center; 
         background-repeat: no-repeat; 
         background-attachment: fixed; 
-
         color: white; 
         display: flex;
         flex-direction: column;
@@ -26,15 +23,12 @@
         position: relative; 
         z-index: 1; 
         overflow-x: hidden; 
-        
-        /* 🛡️ 新增：禁止選取文字 (用於防止複製) */
-        user-select: none; /* 標準屬性 */
-        -webkit-user-select: none; /* Safari, Chrome */
-        -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* IE/Edge */
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
     }
     
-    /* 確保彈出視窗內的文字可以選取 (使用者體驗考量，但如果絕對禁止複製，可以刪除這一段) */
     .message-modal {
         user-select: text;
         -webkit-user-select: text;
@@ -42,7 +36,6 @@
         -ms-user-select: text;
     }
 
-    /* 主要內容容器 */
     .main-content {
         flex-grow: 1; 
         display: flex;
@@ -55,7 +48,6 @@
         z-index: 5;
     }
 
-    /* 浮水印樣式 */
     .watermark {
         position: fixed;    
         bottom: 10px;       
@@ -65,13 +57,8 @@
         opacity: 0.5;       
         z-index: 99;        
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
-        user-select: none; /* 浮水印也禁止選取 */
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
     }
     
-    /* 標題樣式 */
     h1 {
         color: #ff7675; 
         font-size: 2rem;
@@ -85,7 +72,6 @@
         font-size: 1rem;
     }
 
-    /* 控制區 */
     .controls {
         margin-bottom: 20px;
     }
@@ -116,7 +102,6 @@
         transform: none;
     }
 
-    /* 日曆網格 */
     .calendar-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
@@ -125,7 +110,6 @@
         max-width: 600px;
     }
 
-    /* 卡片樣式 */
     .day-box {
         background: #ecf0f1; 
         border-radius: 12px;
@@ -144,47 +128,35 @@
         overflow: hidden; 
     }
 
-    /* === ❄️ 純 CSS 卡片積雪效果 (還原厚度) === */
     .day-box::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        /* 還原積雪厚度 */
         height: 15px; 
         background-color: #ffffff;
-        
-        /* 圓弧曲線 */
         border-radius: 0 0 50% 50% / 0 0 100% 100%;
-        
         z-index: 12; 
-        /* 使用原始的 filter 陰影效果 */
         filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
     }
 
-    /* 鎖住的卡片，積雪會變得稍微暗淡 */
     .day-box.locked::before {
         opacity: 0.8; 
         filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.1));
     }
-
-    /* === ❄️ 卡片積雪效果結束 === */
-
 
     .day-box:hover {
         transform: translateY(-3px);
         border-color: #ff7675;
     }
 
-    /* 今天 */
     .day-box.today {
         background-color: #ff7675;
         color: white;
         animation: pulse 2s infinite;
     }
     
-    /* 播放中 */
     .day-box.playing {
         background-color: #fdcb6e;
         color: #2c3e50;
@@ -193,7 +165,6 @@
         z-index: 10;
     }
 
-    /* 尚未解鎖的日子 (未來) */
     .day-box.locked {
         background-color: #4a637a; 
         color: #95a5a6;
@@ -201,12 +172,6 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     
-    .day-box.locked:hover {
-        transform: none;
-        border-color: transparent;
-    }
-
-    /* 鎖頭圖示 */
     .lock-icon {
         font-size: 0.8rem;
         position: absolute;
@@ -218,7 +183,6 @@
     }
     .day-box.locked .lock-icon { display: block; }
 
-    /* 彈出文字視窗 */
     .message-modal {
         position: fixed;
         bottom: 30px;
@@ -246,7 +210,6 @@
         white-space: pre-wrap;
     }
 
-    /* 彈出視窗內的圖片樣式 */
     .message-image {
         max-width: 100%;
         max-height: 200px; 
@@ -267,7 +230,6 @@
         cursor: pointer;
     }
     
-    /* 下載按鈕樣式 */
     .download-btn {
         display: inline-block;
         margin-top: 15px;
@@ -280,17 +242,12 @@
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         transition: transform 0.2s;
     }
-    .download-btn:hover {
-        transform: scale(1.05);
-    }
 
     @keyframes pulse {
         0% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0.4); } 
         70% { box-shadow: 0 0 0 10px rgba(255, 118, 117, 0); }
         100% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0); }
     }
-
-    /* === ❄️ 純 CSS 三層雪花效果 (大雪花) === */
 
     @keyframes snowfall {
         0% { transform: translateY(0); }
@@ -308,48 +265,28 @@
         animation: snowfall 30s linear infinite; 
     }
     
-    /* 1. 遠景雪花 (4px) */
     .snow-far {
-        width: 4px; 
-        height: 4px; 
-        background: transparent;
-        box-shadow: 
-            30vw 10vh 0 0 #ecf0f1, 5vw 40vh 0 0 #ecf0f1, 70vw 70vh 0 0 #ecf0f1, 95vw 100vh 0 0 #ecf0f1, 10vw 130vh 0 0 #ecf0f1, 80vw 160vh 0 0 #ecf0f1, 50vw 190vh 0 0 #ecf0f1,
-            15vw 20vh 0 0 #ecf0f1, 45vw 50vh 0 0 #ecf0f1, 65vw 80vh 0 0 #ecf0f1, 90vw 110vh 0 0 #ecf0f1, 20vw 140vh 0 0 #ecf0f1, 75vw 170vh 0 0 #ecf0f1, 40vw 200vh 0 0 #ecf0f1;
+        width: 4px; height: 4px; background: transparent;
+        box-shadow: 30vw 10vh #ecf0f1, 5vw 40vh #ecf0f1, 70vw 70vh #ecf0f1, 95vw 100vh #ecf0f1, 10vw 130vh #ecf0f1, 80vw 160vh #ecf0f1, 50vw 190vh #ecf0f1;
         opacity: 0.5;
     }
 
-    /* 2. 中景雪花 (6px) */
     .snow-mid {
-        width: 6px; 
-        height: 6px; 
-        background: transparent;
-        box-shadow: 
-            10vw 5vh 0 0 #ffffff, 60vw 35vh 0 0 #ffffff, 85vw 65vh 0 0 #ffffff, 25vw 95vh 0 0 #ffffff, 70vw 125vh 0 0 #ffffff, 5vw 155vh 0 0 #ffffff, 90vw 185vh 0 0 #ffffff,
-            55vw 25vh 0 0 #ffffff, 15vw 55vh 0 0 #ffffff, 80vw 85vh 0 0 #ffffff, 45vw 115vh 0 0 #ffffff, 95vw 145vh 0 0 #ffffff, 30vw 175vh 0 0 #ffffff;
+        width: 6px; height: 6px; background: transparent;
+        box-shadow: 10vw 5vh #ffffff, 60vw 35vh #ffffff, 85vw 65vh #ffffff, 25vw 95vh #ffffff, 70vw 125vh #ffffff, 5vw 155vh #ffffff, 90vw 185vh #ffffff;
         opacity: 0.8;
         animation: snowfall 20s linear infinite; 
     }
 
-    /* 3. 近景雪花 (8px) */
     .snow-near {
-        width: 8px; 
-        height: 8px; 
-        background: transparent;
-        box-shadow: 
-            50vw 15vh 0 0 #ffffff, 20vw 45vh 0 0 #ffffff, 80vw 75vh 0 0 #ffffff, 10vw 105vh 0 0 #ffffff, 65vw 135vh 0 0 #ffffff, 35vw 165vh 0 0 #ffffff, 95vw 195vh 0 0 #ffffff;
+        width: 8px; height: 8px; background: transparent;
+        box-shadow: 50vw 15vh #ffffff, 20vw 45vh #ffffff, 80vw 75vh #ffffff, 10vw 105vh #ffffff, 65vw 135vh #ffffff, 35vw 165vh #ffffff, 95vw 195vh #ffffff;
         opacity: 1;
         animation: snowfall 15s linear infinite; 
     }
 
-    .snow-far, .snow-mid, .snow-near {
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-    /* === ❄️ 雪花效果 CSS 結束 === */
+    .snow-far, .snow-mid, .snow-near { position: absolute; top: 0; left: 0; }
 
-    /* 底部社群連結區塊 */
     .footer-links {
         margin-top: auto; 
         padding: 20px 0;
@@ -362,91 +299,18 @@
         gap: 30px; 
     }
 
-    /* === ⬇️ 社群 ICON CSS 製作區域 (風格 B: 深藍) ⬇️ === */
     .social-icon {
-        display: flex; /* 使用 flex 方便置中 */
-        justify-content: center;
-        align-items: center;
-        width: 60px; 
-        height: 60px;
-        border-radius: 50%; 
-        
-        /* 風格 B: 深藍色背景 */
-        background-color: #4a637a; 
-        color: white; /* 符號顏色 */
-        font-size: 30px; /* 符號大小 */
-        
-        text-decoration: none;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        
-        transition: transform 0.2s, box-shadow 0.2s;
-        opacity: 0.8; 
-        position: relative; /* 為了圖標定位 */
+        display: flex; justify-content: center; align-items: center;
+        width: 60px; height: 60px; border-radius: 50%; 
+        background-color: #4a637a; color: white; font-size: 30px; 
+        text-decoration: none; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s; opacity: 0.8; 
     }
 
-    .social-icon:hover {
-        transform: translateY(-5px) scale(1.1); 
-        box-shadow: 0 8px 15px rgba(255, 118, 117, 0.8); 
-        opacity: 1; 
-    }
-    
-    /* 1. X/Twitter 圖標 */
-    .icon-x::before {
-        content: 'X'; 
-        font-weight: 900;
-        line-height: 1; 
-    }
-    
-    /* 2. Lit.link (網站/首頁) 圖標 - 方案 D: 純 CSS 中空圓形 (Circle) */
-    .icon-litlink {
-        color: transparent; 
-        position: relative; 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    /* 繪製一個中空的圓形 */
-    .icon-litlink::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 30px; /* 圓的直徑 */
-        height: 30px; /* 圓的直徑 */
-        border: 3px solid white; /* 白色線框，控制線條粗細 */
-        border-radius: 50%; /* 圓形 */
-        
-        /* 完美置中 */
-        transform: translate(-50%, -50%); 
-        box-sizing: border-box;
-        z-index: 2;
-    }
-    
-    /* 清除 ::after */
-    .icon-litlink::after {
-        content: none;
-    }
-
-
-    /* 3. YouTube 圖標 - 使用純 CSS 繪製三角形 (播放鍵) */
-    .icon-youtube::before {
-        /* YouTube的白色播放三角形 */
-        content: '';
-        width: 0;
-        height: 0;
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        border-left: 15px solid white;
-        /* 調整位置使其看起來置中 */
-        transform: translateX(2px); 
-    }
-    /* === ⬆️ 社群 ICON CSS 製作區域 ⬆️ === */
-    
-    /* 移除舊的 img 樣式以防萬一 */
-    .social-icon img {
-        display: none;
-    }
+    .social-icon:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 8px 15px rgba(255, 118, 117, 0.8); opacity: 1; }
+    .icon-x::before { content: 'X'; font-weight: 900; }
+    .icon-litlink::before { content: ''; width: 30px; height: 30px; border: 3px solid white; border-radius: 50%; box-sizing: border-box; }
+    .icon-youtube::before { content: ''; width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 15px solid white; transform: translateX(2px); }
 </style>
 </head>
 <body>
@@ -458,18 +322,18 @@
     </div>
     
     <div class="main-content">
-        <h1>🎄 專屬你的 12 月倒數情書 ❤️</h1>
-        <div class="subtitle">戴上耳機，點擊今天的日期...</div>
+        <h1 id="main-title">"✨ 我們的 2025年 12 月回憶珍藏錄 ❤️</h1>
+        <div class="subtitle">那些閃閃發光的日子，都在這裡...</div>
 
         <div class="controls">
             <button class="play-all-btn" id="play-all-btn" onclick="playAllMemories()">
-                <span>▶</span> 播放直到今天的回憶
+                <span>▶</span> 重新回顧所有回憶
             </button>
         </div>
 
-        <div class="calendar-grid" id="calendar">
-            </div>
+        <div class="calendar-grid" id="calendar"></div>
     </div>
+
     <div class="message-modal" id="modal">
         <div class="message-text" id="msg-content">...</div>
         <img id="modal-image" class="message-image" style="display:none;" alt="回憶照片"> 
@@ -477,40 +341,22 @@
     </div>
 
     <div class="footer-links">
-        <a href="https://x.com/Lutra_rescute" target="_blank" class="social-icon icon-x" title="露恰的Ｘ(推特)！">
-        </a>
-        
-        <a href="https://lit.link/zh-tw/lutralutra" target="_blank" class="social-icon icon-litlink" title="露恰的大平台～">
-        </a>
-        
-        <a href="https://www.youtube.com/channel/UCmyc8eVR3G9A7hjaHsLR6NQ/videos" target="_blank" class="social-icon icon-youtube" title="露恰的YOUTUBE頻道">
-        </a>
+        <a href="https://x.com/Lutra_rescute" target="_blank" class="social-icon icon-x" title="露恰的Ｘ(推特)！"></a>
+        <a href="https://lit.link/zh-tw/lutralutra" target="_blank" class="social-icon icon-litlink" title="露恰的大平台～"></a>
+        <a href="https://www.youtube.com/channel/UCmyc8eVR3G9A7hjaHsLR6NQ/videos" target="_blank" class="social-icon icon-youtube" title="露恰的YOUTUBE頻道"></a>
     </div>
     <div class="watermark">CREATED BY @Lutra_rescute</div>
+
     <script>
-        // 請把引號內的網址換成你的 Google Drive 或 Dropbox 分享連結
         const DOWNLOAD_LINK = "https://drive.google.com/drive/folders/1-Vzro7fkGqRzO7VE5bvKNYL19MItTG2u?usp=sharing";
-        
-        // 為了今天的測試日期 (12/2/2025)，將 TEST_MODE 設定為 false
         const TEST_MODE = false; 
 
-        // 圖片資料庫
         const imageMap = {
-            // 請將檔案放在 images/ 資料夾中
-            3: 'images/3.jpg',      // 12/3 咖啡廳的照片
-            5: 'images/5.jpg',      // 12/3 咖啡廳的照片
-            9: 'images/9.jpg',      // 12/3 咖啡廳的照片
-            11: 'images/11.jpg',     // 12/11 聖誕裝飾的照片
-            13: 'images/13.jpg',     // 12/11 聖誕裝飾的照片
-            17: 'images/17.jpg',     // 12/11 聖誕裝飾的照片
-            20: 'images/20.jpg',     // 12/11 聖誕裝飾的照片
-            22: 'images/22.jpg',     // 12/11 聖誕裝飾的照片
-            25: 'images/25.jpg',     // 12/24 平安夜合照
-            28: 'images/28.jpg',     // 12/24 平安夜合照
-            30: 'images/30.jpg',     // 12/24 平安夜合照
+            3: 'images/3.jpg', 5: 'images/5.jpg', 9: 'images/9.jpg', 11: 'images/11.jpg',
+            13: 'images/13.jpg', 17: 'images/17.jpg', 20: 'images/20.jpg', 22: 'images/22.jpg',
+            25: 'images/25.jpg', 28: 'images/28.jpg', 30: 'images/30.jpg',
         };
         
-        // 31 句台詞資料庫
         const messages = {
             1: "12月的第一天，只是想告訴你：這個月因為有你，冬天好像就沒有那麼冷了……記得把接下來的每一天都空給我呦～",
             2: "天氣變冷了，記得多穿一點喔……你是笨蛋嗎？穿這麼少萬一感冒了怎麼辦……真是的、外套借你啦，要記得感謝我喔。",
@@ -548,31 +394,25 @@
         const calendar = document.getElementById('calendar');
         const modal = document.getElementById('modal');
         const msgContent = document.getElementById('msg-content');
+        const modalImage = document.getElementById('modal-image');
         let currentAudio = null;
         let isPlayingSequence = false; 
 
-        // 取得圖片元素
-        const modalImage = document.getElementById('modal-image');
-
-        // 計算現在是幾月幾號
+        // --- 日期處理與標題更新 ---
         const now = new Date();
         const realyear = now.getFullYear();
-                const realMouth = now.getMouth()+ 1;
+        const realMonth = now.getMonth() + 1; 
         const realDay = now.getDate();
-        
-        // 決定目前解鎖到第幾天
+
         let unlockedDay = 0;
         if (TEST_MODE) {
             unlockedDay = 31; 
-        } else if (realMonth === 12) {
-            unlockedDay = realDay;
-        } else if (realMonth > 12 || realyear > 2025) {
+        } else if (realyear > 2025) {
             unlockedDay = 31;
-        } else {
-            unlockedDay = 0; 
+
         }
 
-        // 產生 1-31 的格子
+        // 產生格子
         for (let i = 1; i <= 31; i++) {
             const dayBox = document.createElement('div');
             dayBox.className = 'day-box';
@@ -580,45 +420,33 @@
             dayBox.id = `day-${i}`;
 
             if (i <= unlockedDay) {
-                if (i === unlockedDay) dayBox.classList.add('today'); 
+                if (i === unlockedDay && realyear === 2025) dayBox.classList.add('today'); 
                 dayBox.onclick = () => playSingleVoice(i);
             } else {
                 dayBox.classList.add('locked');
                 dayBox.onclick = () => alert("偷看是不行的喔！時間到了才能打開！");
             }
-            
             calendar.appendChild(dayBox);
         }
 
-        // 播放單一語音
         function playSingleVoice(day) {
             if (isPlayingSequence) stopSequence(); 
-
             stopAudio(); 
-            
             const element = document.getElementById(`day-${day}`);
-            
-            // 播放音檔
             playAudioFile(day, () => {
                 element.classList.remove('playing'); 
             }, () => {
                 element.classList.add('playing'); 
                 showModal(messages[day] || "（這天還沒有寫悄悄話喔）", day);
             });
-
         }
 
-        // 連續播放功能
         async function playAllMemories() {
             if (unlockedDay === 0) {
                 alert("還沒到 12 月，沒有回憶可以播放喔！");
                 return;
             }
-
-            if (isPlayingSequence) {
-                stopSequence(); 
-                return;
-            }
+            if (isPlayingSequence) { stopSequence(); return; }
 
             isPlayingSequence = true;
             document.getElementById('play-all-btn').innerText = "⏹ 停止播放";
@@ -626,7 +454,6 @@
 
             for (let i = 1; i <= unlockedDay; i++) {
                 if (!isPlayingSequence) break; 
-
                 const element = document.getElementById(`day-${i}`);
                 element.classList.add('playing');
                 showModal(`📅 12月${i}日：\n\n${messages[i]}`, i); 
@@ -634,11 +461,7 @@
                 await new Promise((resolve) => {
                     const audioPath = `audio/${i}.mp3`;
                     currentAudio = new Audio(audioPath);
-                    currentAudio.play().catch(e => {
-                        console.log("播放失敗或找不到檔案:", e);
-                        resolve(); 
-                    });
-                    
+                    currentAudio.play().catch(e => { resolve(); });
                     currentAudio.onended = resolve; 
                 });
 
@@ -651,27 +474,20 @@
             document.getElementById('play-all-btn').innerText = "▶ 播放直到今天的回憶";
         }
 
-        // 播放音檔的底層函式
         function playAudioFile(day, onEnd, onStart) {
             const audioPath = `audio/${day}.mp3`;
             currentAudio = new Audio(audioPath);
-            
             currentAudio.play().then(() => {
                 if(onStart) onStart();
             }).catch(error => {
-                showModal(`📅 12月${day}日：\n\n找不到這天的錄音檔喔！\n\n請確認您的 audio 資料夾中是否有 ${day}.mp3 檔案。`, day);
-                console.error(error);
+                showModal(`📅 12月${day}日：\n\n找不到這天的錄音檔喔！`, day);
                 if(onEnd) onEnd();
             });
-
             currentAudio.onended = onEnd;
         }
 
         function stopAudio() {
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-            }
+            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
             document.querySelectorAll('.day-box').forEach(box => box.classList.remove('playing'));
         }
 
@@ -684,21 +500,16 @@
 
         function showModal(text, day) { 
             msgContent.innerText = text;
-
             const existingBtn = document.getElementById('download-btn');
             if (existingBtn) existingBtn.remove(); 
 
-            // 圖片處理區塊
             const imagePath = imageMap[day];
-
             if (imagePath) {
                 modalImage.src = imagePath;
                 modalImage.style.display = 'block';
             } else {
-                modalImage.src = '';
                 modalImage.style.display = 'none';
             }
-            // 圖片處理區塊 結束
 
             if (day === 31) {
                 const downloadBtn = document.createElement('a');
@@ -706,51 +517,18 @@
                 downloadBtn.href = DOWNLOAD_LINK;
                 downloadBtn.target = "_blank"; 
                 downloadBtn.innerText = "☁️ 下載收藏我們的回憶";
-                
                 downloadBtn.classList.add('download-btn'); 
-
                 modal.appendChild(downloadBtn);
             }
-
             modal.style.display = 'block';
         }
 
-
         function closeModal() {
             modal.style.display = 'none';
-            const existingBtn = document.getElementById('download-btn');
-            if (existingBtn) existingBtn.remove();
-            
-            // 關閉時隱藏圖片
-            document.getElementById('modal-image').style.display = 'none';
-            document.getElementById('modal-image').src = '';
-            
-            if (!isPlayingSequence) { 
-                stopAudio();
-            }
+            if (!isPlayingSequence) stopAudio();
         }
-        
-        // 🛡️ 新增：禁止滑鼠右鍵功能 (用於防止圖片儲存)
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault(); // 阻止瀏覽器顯示預設的右鍵選單
-        });
-        // 雖然 CSS 已經阻止了大部分文字選取，但這個功能主要保護圖片，並提供提示。
-        
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
